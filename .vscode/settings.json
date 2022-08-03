@@ -1,3 +1,4 @@
 {
-    "zigLanguageClient.disabled": false
+    "zigLanguageClient.disabled": false,
+    "zigLanguageClient.path": "zls",
 }
