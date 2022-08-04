@@ -17,7 +17,6 @@ Example:
     "other-apps/server-app": "cargo",
     "other-apps/client-app": "clang",
     "gnuapp": "gcc"
-
 }
 ```
 

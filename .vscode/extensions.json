@@ -1,5 +1,6 @@
 {
     "recommendations": [
-        "prime31.zig"
+        "bungcip.better-toml",
+        "rust-lang.rust-analyzer"
     ]
 }

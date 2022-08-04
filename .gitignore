@@ -1,3 +1,2 @@
-# Zig
-/zig-cache/
-/zig-out/
+# Rust
+/target/
