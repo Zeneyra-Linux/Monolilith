@@ -6,7 +6,7 @@ WIP.
 
 # Usage
 ## Project structure
-You'll need a `.monolilith.json` file. It contains a Map where the Keys are the relative paths to the application folder and the Value the [Project Type](https://github.com/Zeneyra-Linux/Monolilith/wiki/Project-Types).  
+You'll need a `monolilith.json` file. It contains a Map where the Keys are the relative paths to the application folder and the Value the [Project Type](https://github.com/Zeneyra-Linux/Monolilith/wiki/Project-Types).  
 Example:
 ```json
 {
