@@ -12,10 +12,16 @@ fn main() {
     if args.len() > 1 {
         match args.get(1).unwrap().as_str() {
             "build" => {
-                // Build the project
+                tasks::build();
             },
             "init" => {
-                // Initialize the monolilith.json file
+                match tasks::init() {
+                    Ok(msg) => prnt.println(msg.as_str(), Colors::Green),
+                    Err(_) => {
+                        prnt.errorln("Could not create monolilith.json", Colors::Red);
+                        exit(1);
+                    }
+                }
             },
             "add" => {
                 // Adds a new project
@@ -36,12 +42,12 @@ fn main() {
                 prnt.print("See ", Colors::Yellow);
                 prnt.print("monolilith help", Colors::YellowBright);
                 prnt.println(" for more!", Colors::Yellow);
-                
+
                 exit(1);
             }
         }
     } else {
-        // Build the project
+        tasks::build();
     }
     exit(0);
 }
