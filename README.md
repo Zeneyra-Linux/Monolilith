@@ -19,6 +19,11 @@ Example:
     "gnuapp": "gcc"
 }
 ```
+You can use `monolilith init` to create an empty file.
+
+## Adding and removing
+Use `monolilith add <PathToProject> <ProjectType>` to add a new project or `monolilith remove <PathToProject>`.  
+Note that `PathToProject` must be formated like above.
 
 ## Building
 Just run `monolilith` and it will build all the projects and put the result into `build/`.
