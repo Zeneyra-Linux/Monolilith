@@ -1,25 +1,25 @@
 use kagero::printer::{Colors, Printer};
 use std::env;
-use std::process::exit;
+use std::process::ExitCode;
 
 mod config;
 mod compile;
 mod tasks;
 
-fn main() {
+fn main() -> ExitCode {
     let mut prnt = Printer::default();
     let args: Vec<String> = env::args().collect();
     if args.len() > 1 {
         match args.get(1).unwrap().as_str() {
             "build" => {
-                tasks::build();
+                return build_handle(&mut prnt);
             },
             "init" => {
                 match tasks::init() {
                     Ok(msg) => prnt.println(msg.as_str(), Colors::Green),
                     Err(_) => {
                         prnt.errorln("Could not create monolilith.json", Colors::Red);
-                        exit(1);
+                        return ExitCode::FAILURE;
                     }
                 }
             },
@@ -43,11 +43,35 @@ fn main() {
                 prnt.print("monolilith help", Colors::YellowBright);
                 prnt.println(" for more!", Colors::Yellow);
 
-                exit(1);
+                return ExitCode::FAILURE;
             }
         }
     } else {
-        tasks::build();
+        return build_handle(&mut prnt);
     }
-    exit(0);
+    ExitCode::SUCCESS
+}
+
+
+/// Build Handle
+/// 
+/// Handles the build command.
+fn build_handle(prnt: &mut Printer) -> ExitCode{
+    let failed = match tasks::build() {
+        Ok(failed) => failed,
+        Err(_) => {
+            prnt.errorln("Could not read monolilith.json", Colors::RedBright);
+
+            prnt.error("Please run ", Colors::Red);
+            prnt.error("monolilith init", Colors::RedBright);
+            prnt.errorln(" to initialize a new build if you haven't already.", Colors::Red);
+            
+            return ExitCode::FAILURE;
+        }
+    };
+    if failed > 0 {
+        prnt.errorln(format!("{} projects failed to build!", failed).as_str(), Colors::RedBright);
+        return ExitCode::FAILURE;
+    }
+    ExitCode::SUCCESS
 }
