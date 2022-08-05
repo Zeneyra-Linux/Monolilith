@@ -1,7 +1,15 @@
 [package]
 name = "monolilith"
+description = "Simple build system for Monorepos"
 version = "0.1.0"
 edition = "2021"
+license-file = "LICENSE"
+readme = "README.md"
+repository = "https://github.com/Zeneyra-Linux/Monolilith"
+exclude = ["/.vscode/", "/.github/", "/target/"]
+categories = ["command-line-utilities", "accessibility", "compilers"]
+keywords = ["monorepo", "build-system", "build", "zeneyra-linux", "cross-platform"]
+authors = ["Stridsvagn69420 (https://github.com/Stridsvagn69420)"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -9,3 +17,8 @@ edition = "2021"
 kagero = { version = "0.1.0", default-features = false, features = ["printer"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+
+[profile.release]
+lto = true
+strip = true
+debug = true
