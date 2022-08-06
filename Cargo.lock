@@ -10,9 +10,9 @@ checksum = "6c8af84674fe1f223a982c933a0ee1086ac4d4052aa0fb8060c12c6ad838e754"
 
 [[package]]
 name = "kagero"
-version = "0.1.0"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "be7a9582da09f164eb70c7ac522ce52d94979b0b9e1392ace52055195f6d33c1"
+checksum = "df7dd71f74d4ad17b247e6b8b5c3a3b166c2e57d8ec692bd2b9a6dd0c4cf468e"
 
 [[package]]
 name = "monolilith"
