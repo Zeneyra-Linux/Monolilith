@@ -4,10 +4,3 @@
 pub fn add() {
 
 }
-
-/// Prints help for adding projects
-/// 
-/// Prints help for the `add` command.
-pub fn add_help() {
-
-}

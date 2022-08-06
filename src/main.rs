@@ -5,6 +5,7 @@ use std::process::ExitCode;
 mod config;
 mod compile;
 mod tasks;
+mod meta;
 
 fn main() -> ExitCode {
     let mut prnt = Printer::default();
@@ -26,14 +27,17 @@ fn main() -> ExitCode {
             "add" => {
                 // Adds a new project
             },
-            "help" => {
+            "remove" => {
+                // Removes a project
+            },
+            "help" | "-h" | "--help" => {
                 // Print help for the app or a specific command
             },
-            "version" => {
-                // Print the version of the app
+            "version" | "-V" | "--version" => {
+                meta::version(&mut prnt);
             },
             "info" => {
-                // Print info about the app
+                meta::info(&mut prnt);
             },
             cmd => {
                 prnt.error("Unknown command: ", Colors::Red);
