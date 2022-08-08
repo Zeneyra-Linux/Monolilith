@@ -2,7 +2,18 @@
 Simple build system for Monorepos
 
 # Installing
+## Cargo
+```sh
+cargo install monolilith
+```
+
+## Kagero
 WIP.
+
+## Source
+1. Clone the repository: `git clone https://github.com/Zeneyra-Linux/Monolilith.git`
+2. Go into the directory: `cd Monolilith`
+3. Install or build the application: `cargo install --path .` or `cargo build --release`
 
 # Usage
 ## Project structure
