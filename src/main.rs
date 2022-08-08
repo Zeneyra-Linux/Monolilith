@@ -25,10 +25,16 @@ fn main() -> ExitCode {
                 }
             },
             "add" => {
-                // Adds a new project
+                match tasks::add(args) {
+                    Ok(_) => prnt.println("Successfully added subproject!", Colors::Green),
+                    Err(e) => {
+                        prnt.errorln(e.to_string().as_str(), Colors::Red);
+                        return ExitCode::FAILURE;
+                    }
+                }
             },
             "remove" => {
-                // Removes a project
+                tasks::remove();
             },
             "help" | "-h" | "--help" => {
                 // Print help for the app or a specific command

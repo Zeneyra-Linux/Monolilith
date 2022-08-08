@@ -40,6 +40,4 @@ pub fn version(printer: &mut Printer) {
     printer.write(OS);
     printer.write("/");
     printer.writeln(ARCH);
-
-    // TODO: Add Git Commit Hash and Date from build.rs
 }
