@@ -10,6 +10,7 @@ exclude = ["/.vscode/", "/.github/", "/target/"]
 categories = ["command-line-utilities", "accessibility", "compilers"]
 keywords = ["monorepo", "build-system", "build", "zeneyra-linux", "cross-platform"]
 authors = ["Stridsvagn69420 (https://github.com/Stridsvagn69420)"]
+build = "build.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -17,6 +18,9 @@ authors = ["Stridsvagn69420 (https://github.com/Stridsvagn69420)"]
 kagero = { version = "0.2.0", default-features = false, features = ["printer", "runner"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+
+[build-dependencies]
+chrono = "0.4"
 
 [profile.release]
 lto = true

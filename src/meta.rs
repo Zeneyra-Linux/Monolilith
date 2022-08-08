@@ -6,38 +6,75 @@ const DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
 const LICENSE: &str = "ZPL-1.0";
 const LICENSE_RICH: &str = "Zeneyra Pulic License 1.0";
 
+// Build Script Metadata
+const COMPILE_DATE: &str = env!("COMPILE_DATE");
+static GIT_BRANCH_TAG: Option<&str> = option_env!("GIT_BRANCH_TAG");
+static GIT_HASH: Option<&str> = option_env!("GIT_HASH");
+
 use kagero::printer::{Printer, Colors};
 use std::env::consts::{ARCH, OS};
 
 pub fn info(printer: &mut Printer) {
-    // TODO: Print info about the app
+    // Name and Description
     printer.println(format!("{} - {}", NAME_RICH, DESCRIPTION).as_str(), Colors::CyanBright);
+
     // Version
     printer.print("Version: ", Colors::Cyan);
     printer.writeln(VERSION);
+
     // Repository
     printer.print("Repository: ", Colors::Cyan);
     printer.writeln(REPOSITORY);
+
     // License
     printer.print("License: ", Colors::Cyan);
     printer.write(LICENSE_RICH);
     printer.write(" (");
     printer.write(LICENSE);
     printer.writeln(")");
+
+    // Git Branch/Tag and Hash
+    printer.print("Build: ", Colors::Cyan);
+    if GIT_HASH.is_some() && GIT_BRANCH_TAG.is_some() {
+        printer.write(GIT_BRANCH_TAG.unwrap());
+        printer.write("@");
+        printer.write(GIT_HASH.unwrap());
+        printer.write(" (");
+        printer.write(COMPILE_DATE);
+        printer.writeln(")");
+    } else {
+        printer.writeln(COMPILE_DATE);
+    }
+
     // OS
     printer.print("OS: ", Colors::Cyan);
     printer.writeln(OS);
+
     // Arch
     printer.print("Arch: ", Colors::Cyan);
     printer.writeln(ARCH);
 }
 
 pub fn version(printer: &mut Printer) {
+    // Basic Info
     printer.write(NAME);
     printer.write(" ");
     printer.write(VERSION);
     printer.write(" ");
     printer.write(OS);
     printer.write("/");
-    printer.writeln(ARCH);
+    printer.write(ARCH);
+
+    // Custom Compile Info
+    printer.write(" (");
+    if GIT_BRANCH_TAG.is_some() {
+        printer.write(GIT_BRANCH_TAG.unwrap());
+        printer.write(" ");
+    }
+    if GIT_HASH.is_some() {
+        printer.write(GIT_HASH.unwrap());
+        printer.write(" ");
+    }
+    printer.write(COMPILE_DATE);
+    printer.writeln(")");
 }
