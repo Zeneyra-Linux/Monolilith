@@ -18,10 +18,6 @@ pub fn info(printer: &mut Printer) {
     // Name and Description
     printer.println(format!("{} - {}", NAME_RICH, DESCRIPTION).as_str(), Colors::CyanBright);
 
-    // Version
-    printer.print("Version: ", Colors::Cyan);
-    printer.writeln(VERSION);
-
     // Repository
     printer.print("Repository: ", Colors::Cyan);
     printer.writeln(REPOSITORY);
@@ -32,6 +28,10 @@ pub fn info(printer: &mut Printer) {
     printer.write(" (");
     printer.write(LICENSE);
     printer.writeln(")");
+
+    // Version
+    printer.print("Version: ", Colors::Cyan);
+    printer.writeln(VERSION);
 
     // Git Branch/Tag and Hash
     printer.print("Build: ", Colors::Cyan);
@@ -46,13 +46,13 @@ pub fn info(printer: &mut Printer) {
         printer.writeln(COMPILE_DATE);
     }
 
-    // OS
-    printer.print("OS: ", Colors::Cyan);
-    printer.writeln(OS);
-
     // Arch
     printer.print("Arch: ", Colors::Cyan);
     printer.writeln(ARCH);
+
+    // OS
+    printer.print("OS: ", Colors::Cyan);
+    printer.writeln(OS);
 }
 
 pub fn version(printer: &mut Printer) {
