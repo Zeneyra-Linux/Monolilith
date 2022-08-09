@@ -21,14 +21,17 @@ pub fn add(args: Vec<String>) -> Result<(), io::Error> {
     let project = Projects::from_str(args.get(3).unwrap().as_str());
 
     let project_path = Path::new(&path);
-    if !project_path.exists() && !project_path.is_relative() && !project.valid() {
-        return Err(io::Error::new(io::ErrorKind::NotFound, "Invalid Project Type or Path"));
+    if !project_path.exists() || !project_path.is_relative() {
+        return Err(io::Error::new(io::ErrorKind::NotFound, "Invalid Project Path"));
     }
-    let err = match config.insert(path, project) {
+    if !project.valid() {
+        return Err(io::Error::new(io::ErrorKind::InvalidData, "Invalid Project Type"));
+    }
+
+    let err = match config.insert(path, project.to_string()) {
         Some(_) => true,
         None => false
     };
-    
     if err {
         return Err(io::Error::new(io::ErrorKind::AlreadyExists, "Project already exists"));
     }

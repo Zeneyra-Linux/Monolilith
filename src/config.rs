@@ -2,8 +2,12 @@ use serde_json;
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 
-pub fn parse_config(data: &str) -> Result<HashMap<String, Projects>, serde_json::Error> {
-    let config: HashMap<String, Projects> = serde_json::from_str(data)?;
+/// Config Parser
+/// 
+/// Simple Wrapper for the `serde_json::from_str` function.
+/// Note that this function will only return a [HashMap<String, String>]. The [Projects] must be made manually from the values.
+pub fn parse_config(data: &str) -> Result<HashMap<String, String>, serde_json::Error> {
+    let config: HashMap<String, String> = serde_json::from_str(data)?;
     Ok(config)
 }
 
@@ -36,6 +40,24 @@ impl AsRef<str> for Projects {
             Projects::Clang => "clang",
             Projects::ClangPP => "clang++",
             Projects::Unknown(ref s) => s.as_str()
+        }
+    }
+}
+
+impl ToString for Projects {
+    fn to_string(&self) -> String {
+        match self {
+            Projects::Zig => "zig".to_string(),
+            Projects::ZigCC => "zigcc".to_string(),
+            Projects::ZigCPP => "zigcpp".to_string(),
+            Projects::Cargo => "cargo".to_string(),
+            Projects::CargoZigbuild => "cargo-zigbuild".to_string(),
+            Projects::Go => "go".to_string(),
+            Projects::GCC => "gcc".to_string(),
+            Projects::GPP => "g++".to_string(),
+            Projects::Clang => "clang".to_string(),
+            Projects::ClangPP => "clang++".to_string(),
+            Projects::Unknown(ref s) => s.to_string()
         }
     }
 }

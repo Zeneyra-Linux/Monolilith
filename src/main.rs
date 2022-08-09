@@ -1,5 +1,6 @@
 use kagero::printer::{Colors, Printer};
 use std::env;
+use std::io::ErrorKind;
 use std::process::ExitCode;
 
 mod config;
@@ -26,9 +27,12 @@ fn main() -> ExitCode {
             },
             "add" => {
                 match tasks::add(args) {
-                    Ok(_) => prnt.println("Successfully added subproject!", Colors::Green),
+                    Ok(_) => prnt.println("Successfully added project!", Colors::Green),
                     Err(e) => {
-                        prnt.errorln(e.to_string().as_str(), Colors::Red);
+                        match e.kind() {
+                            ErrorKind::PermissionDenied => prnt.errorln("Cannot write to monolilith.json", Colors::Red),
+                            _ => prnt.errorln(e.to_string().as_str(), Colors::Red)
+                        }
                         return ExitCode::FAILURE;
                     }
                 }
