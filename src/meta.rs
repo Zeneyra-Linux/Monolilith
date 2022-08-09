@@ -7,6 +7,8 @@ const LICENSE: &str = "ZPL-1.0";
 const LICENSE_RICH: &str = "Zeneyra Pulic License 1.0";
 
 // Build Script Metadata
+const CARGO_VERSION: &str = env!("CARGO_VERSION");
+const RUSTC_VERSION: &str = env!("RUSTC_VERSION");
 const COMPILE_DATE: &str = env!("COMPILE_DATE");
 static GIT_BRANCH_TAG: Option<&str> = option_env!("GIT_BRANCH_TAG");
 static GIT_HASH: Option<&str> = option_env!("GIT_HASH");
@@ -33,6 +35,14 @@ pub fn info(printer: &mut Printer) {
     printer.print("Version: ", Colors::Cyan);
     printer.writeln(VERSION);
 
+    // Arch
+    printer.print("Arch: ", Colors::Cyan);
+    printer.writeln(ARCH);
+
+    // OS
+    printer.print("OS: ", Colors::Cyan);
+    printer.writeln(OS);
+
     // Git Branch/Tag and Hash
     printer.print("Build: ", Colors::Cyan);
     if GIT_HASH.is_some() && GIT_BRANCH_TAG.is_some() {
@@ -46,13 +56,13 @@ pub fn info(printer: &mut Printer) {
         printer.writeln(COMPILE_DATE);
     }
 
-    // Arch
-    printer.print("Arch: ", Colors::Cyan);
-    printer.writeln(ARCH);
+    // Rust Version
+    printer.print("Rust: ", Colors::Cyan);
+    printer.writeln(RUSTC_VERSION);
 
-    // OS
-    printer.print("OS: ", Colors::Cyan);
-    printer.writeln(OS);
+    // Cargo Version
+    printer.print("Cargo: ", Colors::Cyan);
+    printer.writeln(CARGO_VERSION);
 }
 
 pub fn version(printer: &mut Printer) {
