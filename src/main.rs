@@ -71,7 +71,7 @@ fn result_handle(prnt: &mut Printer, res: Result<(), Error>, success_message: &s
         Ok(_) => prnt.println(success_message, Colors::Green),
         Err(e) => {
             match e.kind() {
-                ErrorKind::PermissionDenied => prnt.errorln("Cannot write to monolilith.json", Colors::Red),
+                ErrorKind::PermissionDenied => prnt.errorln("Cannot read or write to monolilith.json", Colors::Red),
                 _ => prnt.errorln(e.to_string().as_str(), Colors::Red)
             }
             return ExitCode::FAILURE;

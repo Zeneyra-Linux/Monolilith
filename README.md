@@ -1,5 +1,5 @@
 # Monolilith
-Simple build system for Monorepos
+Simple Build System for Monorepos
 
 # Installing
 ## Cargo

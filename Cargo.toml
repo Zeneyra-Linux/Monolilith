@@ -1,6 +1,6 @@
 [package]
 name = "monolilith"
-description = "Simple build system for Monorepos"
+description = "Simple Build System for Monorepos"
 version = "0.1.0"
 edition = "2021"
 license-file = "LICENSE"
