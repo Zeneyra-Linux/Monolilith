@@ -1,6 +1,6 @@
 use kagero::printer::{Colors, Printer};
 use std::env;
-use std::io::ErrorKind;
+use std::io::{ErrorKind, Error};
 use std::process::ExitCode;
 
 mod config;
@@ -14,9 +14,11 @@ fn main() -> ExitCode {
     if args.len() > 1 {
         match args.get(1).unwrap().as_str() {
             "build" => {
+                // Special Build Handle
                 return build_handle(&mut prnt);
             },
             "init" => {
+                // Special Init Handle
                 match tasks::init() {
                     Ok(msg) => prnt.println(msg.as_str(), Colors::Green),
                     Err(_) => {
@@ -26,22 +28,17 @@ fn main() -> ExitCode {
                 }
             },
             "add" => {
-                match tasks::add(args) {
-                    Ok(_) => prnt.println("Successfully added project!", Colors::Green),
-                    Err(e) => {
-                        match e.kind() {
-                            ErrorKind::PermissionDenied => prnt.errorln("Cannot write to monolilith.json", Colors::Red),
-                            _ => prnt.errorln(e.to_string().as_str(), Colors::Red)
-                        }
-                        return ExitCode::FAILURE;
-                    }
-                }
+                // Common Result Handler
+                let result = tasks::add(args);
+                return result_handle(&mut prnt, result, "Successfully added project!");
             },
             "remove" => {
-                tasks::remove();
+                // Common Result Handler
+                let res = tasks::remove(args);
+                return result_handle(&mut prnt, res, "Successfully removed project!");
             },
             "help" | "-h" | "--help" => {
-                // Print help for the app or a specific command
+                // TODO: Print help for the app or a specific command
             },
             "version" | "-V" | "--version" => {
                 meta::version(&mut prnt);
@@ -66,11 +63,27 @@ fn main() -> ExitCode {
     ExitCode::SUCCESS
 }
 
+/// Common Result Handle
+/// 
+/// Handles the result for similar talks like adding and removing.
+fn result_handle(prnt: &mut Printer, res: Result<(), Error>, success_message: &str) -> ExitCode {
+    match res {
+        Ok(_) => prnt.println(success_message, Colors::Green),
+        Err(e) => {
+            match e.kind() {
+                ErrorKind::PermissionDenied => prnt.errorln("Cannot write to monolilith.json", Colors::Red),
+                _ => prnt.errorln(e.to_string().as_str(), Colors::Red)
+            }
+            return ExitCode::FAILURE;
+        }
+    }
+    return ExitCode::SUCCESS;
+}
 
 /// Build Handle
 /// 
 /// Handles the build command.
-fn build_handle(prnt: &mut Printer) -> ExitCode{
+fn build_handle(prnt: &mut Printer) -> ExitCode {
     let failed = match tasks::build() {
         Ok(failed) => failed,
         Err(_) => {

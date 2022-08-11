@@ -1,6 +1,27 @@
 use serde_json;
+use std::io;
+use std::fs;
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
+
+/// Config Wrapper
+/// 
+/// Wrapper for [read_config] and [parse_config]
+pub fn config() -> Result<HashMap<String, String>, io::Error> {
+    let data = read_config()?;
+    let config = parse_config(data.as_str())?;
+    Ok(config)
+}
+
+/// Config Reader
+/// 
+/// Simple Wrapper to read the `monolilith.json` file.
+pub fn read_config() -> Result<String, io::Error> {
+    match fs::read_to_string("monolilith.json") {
+        Ok(data) => Ok(data),
+        Err(_) => return Err(io::Error::new(io::ErrorKind::NotFound, "Could not find monolilith.json"))
+    }
+}
 
 /// Config Parser
 /// 
