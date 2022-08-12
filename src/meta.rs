@@ -3,8 +3,8 @@ const NAME: &str = env!("CARGO_PKG_NAME");
 const NAME_RICH: &str = "Monolilith";
 const REPOSITORY: &str = env!("CARGO_PKG_REPOSITORY");
 const DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
-const LICENSE: &str = "ZPL-1.0";
-const LICENSE_RICH: &str = "Zeneyra Pulic License 1.0";
+const LICENSE: &str = "EUPL-1.2";
+const LICENSE_RICH: &str = "European Union Pulic License 1.2";
 
 // Build Script Metadata
 const CARGO_VERSION: &str = env!("CARGO_VERSION");

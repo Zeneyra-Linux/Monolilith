@@ -34,10 +34,10 @@ You can use `monolilith init` to create an empty file.
 
 ## Adding and removing
 Use `monolilith add <PathToProject> <ProjectType>` to add a new project or `monolilith remove <PathToProject>`.  
-Note that PathToProject must be formated like [above](#project-structure).
+Note that PathToProject must be formatted like [above](#project-structure).
 
 ## Building
 Just run `monolilith` and it will build all the projects and put the result into `build/`.
 
 # License
-Monolilith is licensed under the [Zeneyra Public License](https://github.com/Zeneyra-Linux/ZPL) version 1.0 with standard conditions.
+Monolilith is currently licensed under the EUPL-1.2 with German law, since I live in Germany, but it will soon be relicensed under the [Zeneyra Public License](https://github.com/Zeneyra-Linux/Monolilith) Version 1.0 with default conditions.
