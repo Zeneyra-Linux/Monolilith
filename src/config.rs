@@ -26,14 +26,14 @@ pub fn read_config() -> Result<String, io::Error> {
 /// Config Parser
 /// 
 /// Simple Wrapper for the `serde_json::from_str` function.
-/// Note that this function will only return a [HashMap<String, String>]. The [Projects] must be made manually from the values.
+/// Note that this function will only return a [HashMap<String, String>]. The [Project] must be made manually from the values.
 pub fn parse_config(data: &str) -> Result<HashMap<String, String>, serde_json::Error> {
     let config: HashMap<String, String> = serde_json::from_str(data)?;
     Ok(config)
 }
 
 #[derive(Deserialize, Serialize)]
-pub enum Projects {
+pub enum Project {
     Zig,
     ZigCC,
     ZigCPP,
@@ -47,72 +47,72 @@ pub enum Projects {
     Unknown(String)
 }
 
-impl AsRef<str> for Projects {
+impl AsRef<str> for Project {
     fn as_ref(&self) -> &str {
         match self {
-            Projects::Zig => "zig",
-            Projects::ZigCC => "zigcc",
-            Projects::ZigCPP => "zigcpp",
-            Projects::Cargo => "cargo",
-            Projects::CargoZigbuild => "cargo-zigbuild",
-            Projects::Go => "go",
-            Projects::GCC => "gcc",
-            Projects::GPP => "g++",
-            Projects::Clang => "clang",
-            Projects::ClangPP => "clang++",
-            Projects::Unknown(ref s) => s.as_str()
+            Project::Zig => "zig",
+            Project::ZigCC => "zigcc",
+            Project::ZigCPP => "zigcpp",
+            Project::Cargo => "cargo",
+            Project::CargoZigbuild => "cargo-zigbuild",
+            Project::Go => "go",
+            Project::GCC => "gcc",
+            Project::GPP => "g++",
+            Project::Clang => "clang",
+            Project::ClangPP => "clang++",
+            Project::Unknown(ref s) => s.as_str()
         }
     }
 }
 
-impl ToString for Projects {
+impl ToString for Project {
     fn to_string(&self) -> String {
         match self {
-            Projects::Zig => "zig".to_string(),
-            Projects::ZigCC => "zigcc".to_string(),
-            Projects::ZigCPP => "zigcpp".to_string(),
-            Projects::Cargo => "cargo".to_string(),
-            Projects::CargoZigbuild => "cargo-zigbuild".to_string(),
-            Projects::Go => "go".to_string(),
-            Projects::GCC => "gcc".to_string(),
-            Projects::GPP => "g++".to_string(),
-            Projects::Clang => "clang".to_string(),
-            Projects::ClangPP => "clang++".to_string(),
-            Projects::Unknown(ref s) => s.to_string()
+            Project::Zig => "zig".to_string(),
+            Project::ZigCC => "zigcc".to_string(),
+            Project::ZigCPP => "zigcpp".to_string(),
+            Project::Cargo => "cargo".to_string(),
+            Project::CargoZigbuild => "cargo-zigbuild".to_string(),
+            Project::Go => "go".to_string(),
+            Project::GCC => "gcc".to_string(),
+            Project::GPP => "g++".to_string(),
+            Project::Clang => "clang".to_string(),
+            Project::ClangPP => "clang++".to_string(),
+            Project::Unknown(ref s) => s.to_string()
         }
     }
 }
 
-impl Projects {
-    pub fn from_str(nametype: &str) -> Projects {
+impl Project {
+    pub fn from_str(nametype: &str) -> Project {
         match nametype {
-            "zig" => Projects::Zig,
-            "zigcc" => Projects::ZigCC,
-            "zigcpp" => Projects::ZigCPP,
-            "cargo" => Projects::Cargo,
-            "cargo-zigbuild" => Projects::CargoZigbuild,
-            "go" => Projects::Go,
-            "gcc" => Projects::GCC,
-            "g++" => Projects::GPP,
-            "clang" => Projects::Clang,
-            "clang++" => Projects::ClangPP,
-            _ => Projects::Unknown(nametype.to_string())
+            "zig" => Project::Zig,
+            "zigcc" => Project::ZigCC,
+            "zigcpp" => Project::ZigCPP,
+            "cargo" => Project::Cargo,
+            "cargo-zigbuild" => Project::CargoZigbuild,
+            "go" => Project::Go,
+            "gcc" => Project::GCC,
+            "g++" => Project::GPP,
+            "clang" => Project::Clang,
+            "clang++" => Project::ClangPP,
+            _ => Project::Unknown(nametype.to_string())
         }
     }
 
     pub fn valid(&self) -> bool {
         match self {
-            Projects::Zig => true,
-            Projects::ZigCC => true,
-            Projects::ZigCPP => true,
-            Projects::Cargo => true,
-            Projects::CargoZigbuild => true,
-            Projects::Go => true,
-            Projects::GCC => true,
-            Projects::GPP => true,
-            Projects::Clang => true,
-            Projects::ClangPP => true,
-            Projects::Unknown(_) => false
+            Project::Zig => true,
+            Project::ZigCC => true,
+            Project::ZigCPP => true,
+            Project::Cargo => true,
+            Project::CargoZigbuild => true,
+            Project::Go => true,
+            Project::GCC => true,
+            Project::GPP => true,
+            Project::Clang => true,
+            Project::ClangPP => true,
+            Project::Unknown(_) => false
         }
     }
 

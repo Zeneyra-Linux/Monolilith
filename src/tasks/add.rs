@@ -2,7 +2,7 @@ use std::fs;
 use std::io;
 use std::path::Path;
 use serde_json::to_string_pretty;
-use crate::config::{config, Projects};
+use crate::config::{config, Project};
 
 /// Adds a new project
 /// 
@@ -14,7 +14,7 @@ pub fn add(args: Vec<String>) -> Result<(), io::Error> {
     let mut config = config()?;
 
     let path = args.get(2).unwrap().to_string();
-    let project = Projects::from_str(args.get(3).unwrap().as_str());
+    let project = Project::from_str(args.get(3).unwrap().as_str());
 
     let project_path = Path::new(&path);
     if !project_path.exists() || !project_path.is_relative() {
