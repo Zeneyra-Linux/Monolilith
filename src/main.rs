@@ -4,9 +4,8 @@ use std::io::{ErrorKind, Error};
 use std::process::ExitCode;
 
 mod config;
-mod compile;
-mod tasks;
 mod meta;
+mod tasks;
 
 fn main() -> ExitCode {
     let mut prnt = Printer::default();

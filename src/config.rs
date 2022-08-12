@@ -115,4 +115,20 @@ impl Projects {
             Projects::Unknown(_) => false
         }
     }
+
+    pub fn valid_str(t: &str) -> bool {
+        match t {
+            "zig" => true,
+            "zigcc" => true,
+            "zigcpp" => true,
+            "cargo" => true,
+            "cargo-zigbuild" => true,
+            "go" => true,
+            "gcc" => true,
+            "g++" => true,
+            "clang" => true,
+            "clang++" => true,
+            _ => false
+        }
+    }
 }
