@@ -21,70 +21,51 @@ pub fn info(printer: &mut Printer) {
     printer.println(format!("{} - {}", NAME_RICH, DESCRIPTION).as_str(), Colors::CyanBright);
 
     // Repository
-    printer.print("Repository: ", Colors::Cyan);
-    printer.writeln(REPOSITORY);
+    printer.print("Repository: ", Colors::Cyan).writeln(REPOSITORY);
 
     // License
-    printer.print("License: ", Colors::Cyan);
-    printer.write(LICENSE_RICH);
-    printer.write(" (");
-    printer.write(LICENSE);
-    printer.writeln(")");
+    printer.print("License: ", Colors::Cyan).write(LICENSE_RICH)
+    .write(" (").write(LICENSE).writeln(")");
 
     // Version
-    printer.print("Version: ", Colors::Cyan);
-    printer.writeln(VERSION);
+    printer.print("Version: ", Colors::Cyan).writeln(VERSION);
 
     // Arch
-    printer.print("Arch: ", Colors::Cyan);
-    printer.writeln(ARCH);
+    printer.print("Arch: ", Colors::Cyan).writeln(ARCH);
 
     // OS
-    printer.print("OS: ", Colors::Cyan);
-    printer.writeln(OS);
+    printer.print("OS: ", Colors::Cyan).writeln(OS);
 
     // Git Branch/Tag and Hash
     printer.print("Build: ", Colors::Cyan);
     if GIT_HASH.is_some() && GIT_BRANCH_TAG.is_some() {
-        printer.write(GIT_BRANCH_TAG.unwrap());
-        printer.write("@");
-        printer.write(GIT_HASH.unwrap());
-        printer.write(" (");
-        printer.write(COMPILE_DATE);
-        printer.writeln(")");
+        printer.write(GIT_BRANCH_TAG.unwrap())
+        .write("@").write(GIT_HASH.unwrap())
+        .write(" (").write(COMPILE_DATE).writeln(")");
     } else {
         printer.writeln(COMPILE_DATE);
     }
 
     // Rust Version
-    printer.print("Rust: ", Colors::Cyan);
-    printer.writeln(RUSTC_VERSION);
+    printer.print("Rust: ", Colors::Cyan).writeln(RUSTC_VERSION);
 
     // Cargo Version
-    printer.print("Cargo: ", Colors::Cyan);
-    printer.writeln(CARGO_VERSION);
+    printer.print("Cargo: ", Colors::Cyan).writeln(CARGO_VERSION);
 }
 
 pub fn version(printer: &mut Printer) {
     // Basic Info
-    printer.write(NAME);
-    printer.write(" ");
-    printer.write(VERSION);
-    printer.write(" ");
-    printer.write(OS);
-    printer.write("/");
-    printer.write(ARCH);
+    printer.write(NAME).write(" ")
+    .write(VERSION).write(" ")
+    .write(OS).write("/").write(ARCH);
 
     // Custom Compile Info
     printer.write(" (");
     if GIT_BRANCH_TAG.is_some() {
-        printer.write(GIT_BRANCH_TAG.unwrap());
-        printer.write(" ");
+        printer.write(GIT_BRANCH_TAG.unwrap()).write(" ");
     }
     if GIT_HASH.is_some() {
-        printer.write(GIT_HASH.unwrap());
-        printer.write(" ");
+        printer.write(GIT_HASH.unwrap()).write(" ");
     }
-    printer.write(COMPILE_DATE);
-    printer.writeln(")");
+    printer.write(COMPILE_DATE).writeln(")");
 }

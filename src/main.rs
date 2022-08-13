@@ -18,12 +18,11 @@ fn main() -> ExitCode {
             },
             "init" => {
                 // Special Init Handle
-                match tasks::init() {
-                    Ok(msg) => prnt.println(msg.as_str(), Colors::Green),
-                    Err(_) => {
-                        prnt.errorln("Could not create monolilith.json", Colors::Red);
-                        return ExitCode::FAILURE;
-                    }
+                if let Ok(msg) = tasks::init() {
+                    prnt.println(msg.as_str(), Colors::Green);
+                } else {
+                    prnt.errorln("Could not create monolilith.json", Colors::Red);
+                    return ExitCode::FAILURE;
                 }
             },
             "add" => {
@@ -72,10 +71,10 @@ fn result_handle(prnt: &mut Printer, res: Result<(), Error>, success_message: &s
             match e.kind() {
                 ErrorKind::PermissionDenied => prnt.errorln("Cannot read or write to monolilith.json", Colors::Red),
                 _ => prnt.errorln(e.to_string().as_str(), Colors::Red)
-            }
+            };
             return ExitCode::FAILURE;
         }
-    }
+    };
     return ExitCode::SUCCESS;
 }
 

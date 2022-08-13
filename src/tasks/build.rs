@@ -12,7 +12,13 @@ pub fn build() -> Result<u128, io::Error>{
     let mut failed = 0;
 
     // Read config, make it iterable and filter out invalid Project
-    config()?.into_iter().filter(|x| Project::valid_str(x.1.as_str()))
+    config()?.into_iter().filter_map(|x| {
+        if let Some(project) = Project::from_str(x.1.as_str()) {
+            Some((x.0, project))
+        } else {
+            None
+        }
+    })
 
     // Build each project
     .for_each(|entry| {

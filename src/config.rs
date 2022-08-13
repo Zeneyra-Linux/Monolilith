@@ -32,7 +32,7 @@ pub fn parse_config(data: &str) -> Result<HashMap<String, String>, serde_json::E
     Ok(config)
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug)]
 pub enum Project {
     Zig,
     ZigCC,
@@ -43,8 +43,7 @@ pub enum Project {
     GCC,
     GPP,
     Clang,
-    ClangPP,
-    Unknown(String)
+    ClangPP
 }
 
 impl AsRef<str> for Project {
@@ -60,7 +59,6 @@ impl AsRef<str> for Project {
             Project::GPP => "g++",
             Project::Clang => "clang",
             Project::ClangPP => "clang++",
-            Project::Unknown(ref s) => s.as_str()
         }
     }
 }
@@ -78,57 +76,24 @@ impl ToString for Project {
             Project::GPP => "g++".to_string(),
             Project::Clang => "clang".to_string(),
             Project::ClangPP => "clang++".to_string(),
-            Project::Unknown(ref s) => s.to_string()
         }
     }
 }
 
 impl Project {
-    pub fn from_str(nametype: &str) -> Project {
+    pub fn from_str(nametype: &str) -> Option<Project> {
         match nametype {
-            "zig" => Project::Zig,
-            "zigcc" => Project::ZigCC,
-            "zigcpp" => Project::ZigCPP,
-            "cargo" => Project::Cargo,
-            "cargo-zigbuild" => Project::CargoZigbuild,
-            "go" => Project::Go,
-            "gcc" => Project::GCC,
-            "g++" => Project::GPP,
-            "clang" => Project::Clang,
-            "clang++" => Project::ClangPP,
-            _ => Project::Unknown(nametype.to_string())
-        }
-    }
-
-    pub fn valid(&self) -> bool {
-        match self {
-            Project::Zig => true,
-            Project::ZigCC => true,
-            Project::ZigCPP => true,
-            Project::Cargo => true,
-            Project::CargoZigbuild => true,
-            Project::Go => true,
-            Project::GCC => true,
-            Project::GPP => true,
-            Project::Clang => true,
-            Project::ClangPP => true,
-            Project::Unknown(_) => false
-        }
-    }
-
-    pub fn valid_str(t: &str) -> bool {
-        match t {
-            "zig" => true,
-            "zigcc" => true,
-            "zigcpp" => true,
-            "cargo" => true,
-            "cargo-zigbuild" => true,
-            "go" => true,
-            "gcc" => true,
-            "g++" => true,
-            "clang" => true,
-            "clang++" => true,
-            _ => false
+            "zig" => Some(Project::Zig),
+            "zigcc" => Some(Project::ZigCC),
+            "zigcpp" => Some(Project::ZigCPP),
+            "cargo" => Some(Project::Cargo),
+            "cargo-zigbuild" => Some(Project::CargoZigbuild),
+            "go" => Some(Project::Go),
+            "gcc" => Some(Project::GCC),
+            "g++" => Some(Project::GPP),
+            "clang" => Some(Project::Clang),
+            "clang++" => Some(Project::ClangPP),
+            _ => None
         }
     }
 }
