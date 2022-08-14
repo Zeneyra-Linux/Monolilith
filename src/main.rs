@@ -6,6 +6,7 @@ use std::process::ExitCode;
 mod config;
 mod meta;
 mod tasks;
+mod compile;
 
 fn main() -> ExitCode {
     let mut prnt = Printer::default();
@@ -14,7 +15,7 @@ fn main() -> ExitCode {
         match args.get(1).unwrap().as_str() {
             "build" => {
                 // Special Build Handle
-                return build_handle(&mut prnt);
+                return build_handle(&mut prnt, args, 2);
             },
             "init" => {
                 // Special Init Handle
@@ -56,7 +57,7 @@ fn main() -> ExitCode {
             }
         }
     } else {
-        return build_handle(&mut prnt);
+        return build_handle(&mut prnt, args, 1);
     }
     ExitCode::SUCCESS
 }
@@ -81,8 +82,14 @@ fn result_handle(prnt: &mut Printer, res: Result<(), Error>, success_message: &s
 /// Build Handle
 /// 
 /// Handles the build command.
-fn build_handle(prnt: &mut Printer) -> ExitCode {
-    let failed = match tasks::build() {
+fn build_handle(prnt: &mut Printer, args: Vec<String>, position: usize) -> ExitCode {
+    // Check if -v or --verbose is present as `monolilith build --verbose` or `monolilith --verbose` and set verbose to true
+    let mut verbose = false;
+    if let Some("-v" | "--verbose") = args.get(position).and_then(|x| Some(x.as_str())) {
+        verbose = true;
+    }
+
+    let failed = match tasks::build(verbose) {
         Ok(failed) => failed,
         Err(_) => {
             prnt.errorln("Could not read monolilith.json", Colors::RedBright);

@@ -1,8 +1,10 @@
-use serde_json;
 use std::io;
 use std::fs;
+use std::path::Path;
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
+
+use crate::compile::*;
 
 /// Config Wrapper
 /// 
@@ -36,14 +38,14 @@ pub fn parse_config(data: &str) -> Result<HashMap<String, String>, serde_json::E
 pub enum Project {
     Zig,
     ZigCC,
-    ZigCPP,
+    ZigCXX,
     Cargo,
     CargoZigbuild,
     Go,
     GCC,
-    GPP,
+    GXX,
     Clang,
-    ClangPP
+    ClangXX
 }
 
 impl AsRef<str> for Project {
@@ -51,14 +53,14 @@ impl AsRef<str> for Project {
         match self {
             Project::Zig => "zig",
             Project::ZigCC => "zigcc",
-            Project::ZigCPP => "zigcpp",
+            Project::ZigCXX => "zigc++",
             Project::Cargo => "cargo",
             Project::CargoZigbuild => "cargo-zigbuild",
             Project::Go => "go",
             Project::GCC => "gcc",
-            Project::GPP => "g++",
+            Project::GXX => "g++",
             Project::Clang => "clang",
-            Project::ClangPP => "clang++",
+            Project::ClangXX => "clang++",
         }
     }
 }
@@ -68,14 +70,14 @@ impl ToString for Project {
         match self {
             Project::Zig => "zig".to_string(),
             Project::ZigCC => "zigcc".to_string(),
-            Project::ZigCPP => "zigcpp".to_string(),
+            Project::ZigCXX => "ZigCXX".to_string(),
             Project::Cargo => "cargo".to_string(),
             Project::CargoZigbuild => "cargo-zigbuild".to_string(),
             Project::Go => "go".to_string(),
             Project::GCC => "gcc".to_string(),
-            Project::GPP => "g++".to_string(),
+            Project::GXX => "g++".to_string(),
             Project::Clang => "clang".to_string(),
-            Project::ClangPP => "clang++".to_string(),
+            Project::ClangXX => "clang++".to_string(),
         }
     }
 }
@@ -85,15 +87,30 @@ impl Project {
         match nametype {
             "zig" => Some(Project::Zig),
             "zigcc" => Some(Project::ZigCC),
-            "zigcpp" => Some(Project::ZigCPP),
+            "ZigCXX" => Some(Project::ZigCXX),
             "cargo" => Some(Project::Cargo),
             "cargo-zigbuild" => Some(Project::CargoZigbuild),
             "go" => Some(Project::Go),
             "gcc" => Some(Project::GCC),
-            "g++" => Some(Project::GPP),
+            "g++" => Some(Project::GXX),
             "clang" => Some(Project::Clang),
-            "clang++" => Some(Project::ClangPP),
+            "clang++" => Some(Project::ClangXX),
             _ => None
+        }
+    }
+
+    pub fn build(&self, path: impl AsRef<Path>, verbose: bool) {
+        match self {
+            Project::Zig => zig::zig(path, verbose),
+            Project::ZigCC => zig::zigcc(path, verbose),
+            Project::ZigCXX => zig::zigcxx(path, verbose),
+            Project::Cargo => cargo::zigbuild(path, verbose),
+            Project::CargoZigbuild => cargo::zigbuild(path, verbose),
+            Project::Go => go::build(path, verbose),
+            Project::GCC => gcc::cc(path, verbose),
+            Project::GXX => gcc::cxx(path, verbose),
+            Project::Clang => clang::cc(path, verbose),
+            Project::ClangXX => clang::cxx(path, verbose),
         }
     }
 }
