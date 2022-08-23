@@ -15,6 +15,8 @@ WIP.
 2. Go into the directory: `cd Monolilith`
 3. Install or build the application: `cargo install --path .` or `cargo build --release`
 
+Optionally, you can add `RUSTFLAGS="-C target-cpu=native"` in front of the command to optimize the application for your CPU.
+
 # Usage
 ## Project structure
 You'll need a `monolilith.json` file. It contains a Map where the Keys are the relative paths to the application folder and the Value the [Project Type](https://github.com/Zeneyra-Linux/Monolilith/wiki/Project-Types).  
