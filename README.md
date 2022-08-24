@@ -15,7 +15,7 @@ WIP.
 2. Go into the directory: `cd Monolilith`
 3. Install or build the application: `cargo install --path .` or `cargo build --release`
 
-Optionally, you can add `RUSTFLAGS="-C target-cpu=native"` in front of the command to optimize the application for your CPU.
+Optionally, you can add `RUSTFLAGS="-C target-cpu=native"` in front of the command to optimize the application for your CPU. Same goes for [installing with Cargo](#cargo)
 
 # Usage
 ## Project structure
