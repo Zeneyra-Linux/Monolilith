@@ -1,17 +1,17 @@
-use std::path::Path;
+use std::io;
+use std::path::{Path, PathBuf};
 use kagero::runner::{shell, result};
-use kagero::printer::{Printer, Colors};
 
 /// GCC
 /// 
 /// Compiles a C project with GCC.
-pub fn cc(path: impl AsRef<Path>, verbose: bool) {
+pub fn cc(path: impl AsRef<Path>, cwd: PathBuf, binname: String, verbose: bool) -> io::Result<()> {
 
 }
 
 /// G++
 /// 
 /// Compiles a C++ project with GCC.
-pub fn cxx(path: impl AsRef<Path>, verbose: bool) {
+pub fn cxx(path: impl AsRef<Path>, cwd: PathBuf, binname: String, verbose: bool) -> io::Result<()> {
 
 }

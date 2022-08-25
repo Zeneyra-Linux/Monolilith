@@ -1,17 +1,17 @@
-use std::path::Path;
+use std::io;
+use std::path::{Path, PathBuf};
 use kagero::runner::{shell, result};
-use kagero::printer::{Printer, Colors};
 
 /// Cargo Build
 /// 
 /// Runs the `cargo build --release` command.
-pub fn build(path: impl AsRef<Path>, verbose: bool) {
+pub fn build(path: impl AsRef<Path>, cwd: PathBuf, binname: String, verbose: bool) -> io::Result<()> {
 
 }
 
 /// Cargo Zigbuild
 /// 
 /// Runs `cargo zigbuild --release`.
-pub fn zigbuild(path: impl AsRef<Path>, verbose: bool) {
+pub fn zigbuild(path: impl AsRef<Path>, cwd: PathBuf, binname: String, verbose: bool) -> io::Result<()> {
 
 }

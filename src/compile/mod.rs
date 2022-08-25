@@ -101,15 +101,12 @@ fn list_dirs(dir: impl AsRef<Path>) -> io::Result<Vec<PathBuf>> {
 /// 
 /// Lists all files in a directory and subdirectories by extensions.
 /// Returns a [Vec<PathBuf>] containing [PathBuf]s.
-pub fn list_files_recursive(dir_impl: impl AsRef<Path>, ext: &str) -> io::Result<Vec<PathBuf>> {
-    // Use Path as a reference
-    let dir = dir_impl.as_ref();
-
+pub fn list_files_recursive(dir: impl AsRef<Path>, ext: &str) -> io::Result<Vec<PathBuf>> {
     // Get files for current directory
-    let mut files = list_files(dir, ext)?;
+    let mut files = list_files(&dir, ext)?;
 
     // Get directories of the current dir
-    for folder in list_dirs(dir)? {
+    for folder in list_dirs(&dir)? {
         // Iterate over subfolder files
         list_files_recursive(folder, ext)?.into_iter()
         // Append the new files

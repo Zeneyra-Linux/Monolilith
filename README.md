@@ -32,7 +32,7 @@ Example:
     "gnuapp": "gcc"
 }
 ```
-You can use `monolilith init` to create an empty file.
+You can use `monolilith init` to create an empty file. The subproject folder should also match the project name and resulting binary.
 
 ## Adding and removing
 Use `monolilith add <PathToProject> <ProjectType>` to add a new project or `monolilith remove <PathToProject>`.  

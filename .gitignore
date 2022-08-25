@@ -1,2 +1,5 @@
 # Rust
 /target/
+
+# Monolilith
+/build/

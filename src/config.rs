@@ -1,9 +1,8 @@
 use std::io;
 use std::fs;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
-
 use crate::compile::*;
 
 /// Config Wrapper
@@ -83,6 +82,21 @@ impl ToString for Project {
 }
 
 impl Project {
+    pub fn rich(&self) -> &str {
+        match self {
+            Project::Zig => "Zig",
+            Project::ZigCC => "C (Zig)",
+            Project::ZigCXX => "C++ (Zig)",
+            Project::Cargo => "Rust",
+            Project::CargoZigbuild => "Rust (Zig)",
+            Project::Go => "Go",
+            Project::GCC => "C (GCC)",
+            Project::GXX => "C++ (GCC)",
+            Project::Clang => "C (Clang)",
+            Project::ClangXX => "C++ (Clang)",
+        }
+    }
+
     pub fn from_str(nametype: &str) -> Option<Project> {
         match nametype {
             "zig" => Some(Project::Zig),
@@ -99,18 +113,26 @@ impl Project {
         }
     }
 
-    pub fn build(&self, path: impl AsRef<Path>, verbose: bool) {
-        match self {
-            Project::Zig => zig::zig(path, verbose),
-            Project::ZigCC => zig::zigcc(path, verbose),
-            Project::ZigCXX => zig::zigcxx(path, verbose),
-            Project::Cargo => cargo::zigbuild(path, verbose),
-            Project::CargoZigbuild => cargo::zigbuild(path, verbose),
-            Project::Go => go::build(path, verbose),
-            Project::GCC => gcc::cc(path, verbose),
-            Project::GXX => gcc::cxx(path, verbose),
-            Project::Clang => clang::cc(path, verbose),
-            Project::ClangXX => clang::cxx(path, verbose),
+    pub fn build(&self, path: impl AsRef<Path>, cwd: PathBuf, verbose: bool) -> io::Result<()> {
+        // Check if the binary name can be used
+        if let Some(binname_os) = path.as_ref().file_name() {
+            if let Some(binname) = binname_os.to_str().and_then(|x| Some(x.to_string())) {
+                // Run build command
+                return match self {
+                    Project::Zig => zig::zig(path, cwd, binname, verbose),
+                    Project::ZigCC => zig::zigcc(path, cwd, binname, verbose),
+                    Project::ZigCXX => zig::zigcxx(path, cwd, binname, verbose),
+                    Project::Cargo => cargo::zigbuild(path, cwd, binname, verbose),
+                    Project::CargoZigbuild => cargo::zigbuild(path, cwd, binname, verbose),
+                    Project::Go => go::build(path, cwd, binname, verbose),
+                    Project::GCC => gcc::cc(path, cwd, binname, verbose),
+                    Project::GXX => gcc::cxx(path, cwd, binname, verbose),
+                    Project::Clang => clang::cc(path, cwd, binname, verbose),
+                    Project::ClangXX => clang::cxx(path, cwd, binname, verbose),
+                }
+            }
         }
+        // Return Error
+        Err(io::Error::new(io::ErrorKind::OutOfMemory, "Cannot read binary name"))
     }
 }
