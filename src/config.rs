@@ -117,18 +117,29 @@ impl Project {
         // Check if the binary name can be used
         if let Some(binname_os) = path.as_ref().file_name() {
             if let Some(binname) = binname_os.to_str().and_then(|x| Some(x.to_string())) {
+                // Get outdir
+                let outdir = cwd.join("build/");
+
+                // Outfile for Windows
+                #[cfg(target_os = "windows")]
+                let outfile = outdir.join(binname.add(".exe"));
+
+                // Outfile for !Windows
+                #[cfg(not(target_os = "windows"))]
+                let outfile = outdir.join(binname);
+
                 // Run build command
                 return match self {
-                    Project::Zig => zig::zig(path, cwd, binname, verbose),
-                    Project::ZigCC => zig::zigcc(path, cwd, binname, verbose),
-                    Project::ZigCXX => zig::zigcxx(path, cwd, binname, verbose),
-                    Project::Cargo => cargo::zigbuild(path, cwd, binname, verbose),
-                    Project::CargoZigbuild => cargo::zigbuild(path, cwd, binname, verbose),
-                    Project::Go => go::build(path, cwd, binname, verbose),
-                    Project::GCC => gcc::cc(path, cwd, binname, verbose),
-                    Project::GXX => gcc::cxx(path, cwd, binname, verbose),
-                    Project::Clang => clang::cc(path, cwd, binname, verbose),
-                    Project::ClangXX => clang::cxx(path, cwd, binname, verbose),
+                    Project::Zig => zig::zig(path, cwd, binname, outfile, verbose),
+                    Project::ZigCC => zig::zigcc(path, cwd, binname, outfile, verbose),
+                    Project::ZigCXX => zig::zigcxx(path, cwd, binname, outfile, verbose),
+                    Project::Cargo => cargo::zigbuild(path, cwd, binname, outfile, verbose),
+                    Project::CargoZigbuild => cargo::zigbuild(path, cwd, binname, outfile, verbose),
+                    Project::Go => go::build(path, cwd, binname, outfile, verbose),
+                    Project::GCC => gcc::cc(path, cwd, binname, outfile, verbose),
+                    Project::GXX => gcc::cxx(path, cwd, binname, outfile, verbose),
+                    Project::Clang => clang::cc(path, cwd, binname, outfile, verbose),
+                    Project::ClangXX => clang::cxx(path, cwd, binname, outfile, verbose),
                 }
             }
         }

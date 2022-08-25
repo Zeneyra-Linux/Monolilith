@@ -5,13 +5,13 @@ use kagero::runner::{shell, result};
 /// Cargo Build
 /// 
 /// Runs the `cargo build --release` command.
-pub fn build(path: impl AsRef<Path>, cwd: PathBuf, binname: String, verbose: bool) -> io::Result<()> {
+pub fn build(path: impl AsRef<Path>, cwd: PathBuf, binname: String, outfile: PathBuf, verbose: bool) -> io::Result<()> {
 
 }
 
 /// Cargo Zigbuild
 /// 
 /// Runs `cargo zigbuild --release`.
-pub fn zigbuild(path: impl AsRef<Path>, cwd: PathBuf, binname: String, verbose: bool) -> io::Result<()> {
+pub fn zigbuild(path: impl AsRef<Path>, cwd: PathBuf, binname: String, outfile: PathBuf, verbose: bool) -> io::Result<()> {
 
 }
