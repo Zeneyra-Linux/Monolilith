@@ -25,7 +25,7 @@ Example:
 {
     "true": "zigcc",
     "false": "zigc++",
-    "fetch": "zig",
+    "fetch": "zigfast",
     "my-app": "cargo-zigbuild",
     "other-apps/server-app": "cargo",
     "other-apps/client-app": "clang",

@@ -1,4 +1,5 @@
 use std::io;
+use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 use super::execute;
@@ -9,12 +10,15 @@ use super::execute;
 pub fn build(path: impl AsRef<Path>, binname: String, outfile: PathBuf, verbose: bool) -> io::Result<()> {
     // cargo build --release in project subdir
     let mut cmd = Command::new("cargo");
-    cmd.args(["build", "--release"]).current_dir(path);
+    cmd.args(["build", "--release"]).current_dir(path.as_ref());
 
     // Run Build
-    execute(cmd, verbose)
+    execute(cmd, verbose)?;
 
-    // TODO: Copy resulting binary into output folder
+    // Copy resulting binary into output folder
+    let buildfile = path.as_ref().join("target/").join(binname);
+    fs::copy(buildfile, outfile)?;
+    Ok(())
 }
 
 /// Cargo Zigbuild
@@ -23,10 +27,13 @@ pub fn build(path: impl AsRef<Path>, binname: String, outfile: PathBuf, verbose:
 pub fn zigbuild(path: impl AsRef<Path>, binname: String, outfile: PathBuf, verbose: bool) -> io::Result<()> {
     // cargo zigbuild --release in project subdir
     let mut cmd = Command::new("cargo");
-    cmd.args(["zigbuild", "--release"]).current_dir(path);
+    cmd.args(["zigbuild", "--release"]).current_dir(path.as_ref());
 
     // Run Build
-    execute(cmd, verbose)
+    execute(cmd, verbose)?;
 
-    // TODO: Copy resulting binary into output folder
+    // Copy resulting binary into output folder
+    let buildfile = path.as_ref().join("target/").join(binname);
+    fs::copy(buildfile, outfile)?;
+    Ok(())
 }

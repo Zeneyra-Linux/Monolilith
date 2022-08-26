@@ -33,9 +33,26 @@ pub fn parse_config(data: &str) -> Result<HashMap<String, String>, serde_json::E
     Ok(config)
 }
 
+
+pub const ZIGSAFE: &str = "zigsafe";
+pub const ZIGFAST: &str = "zigfast";
+pub const ZIGSMALL: &str = "zigsmall";
+pub const ZIGCC: &str = "zigcc";
+pub const ZIGCXX: &str = "zigc++";
+pub const CARGO: &str = "cargo";
+pub const CARGO_ZIGBUILD: &str = "cargo-zigbuild";
+pub const GO: &str = "go";
+pub const GCC: &str = "gcc";
+pub const GXX: &str = "g++";
+pub const CLANG: &str = "clang";
+pub const CLANGXX: &str = "clang++";
+
+
 #[derive(Deserialize, Serialize, Debug)]
 pub enum Project {
-    Zig,
+    ZigSafe,
+    ZigFast,
+    ZigSmall,
     ZigCC,
     ZigCXX,
     Cargo,
@@ -50,16 +67,18 @@ pub enum Project {
 impl AsRef<str> for Project {
     fn as_ref(&self) -> &str {
         match self {
-            Project::Zig => "zig",
-            Project::ZigCC => "zigcc",
-            Project::ZigCXX => "zigc++",
-            Project::Cargo => "cargo",
-            Project::CargoZigbuild => "cargo-zigbuild",
-            Project::Go => "go",
-            Project::GCC => "gcc",
-            Project::GXX => "g++",
-            Project::Clang => "clang",
-            Project::ClangXX => "clang++",
+            Project::ZigSafe => ZIGSAFE,
+            Project::ZigFast => ZIGFAST,
+            Project::ZigSmall => ZIGSMALL,
+            Project::ZigCC => ZIGCC,
+            Project::ZigCXX => ZIGCXX,
+            Project::Cargo => CARGO,
+            Project::CargoZigbuild => CARGO_ZIGBUILD,
+            Project::Go => GO,
+            Project::GCC => GCC,
+            Project::GXX => GXX,
+            Project::Clang => CLANG,
+            Project::ClangXX => CLANGXX,
         }
     }
 }
@@ -67,16 +86,18 @@ impl AsRef<str> for Project {
 impl ToString for Project {
     fn to_string(&self) -> String {
         match self {
-            Project::Zig => "zig".to_string(),
-            Project::ZigCC => "zigcc".to_string(),
-            Project::ZigCXX => "ZigCXX".to_string(),
-            Project::Cargo => "cargo".to_string(),
-            Project::CargoZigbuild => "cargo-zigbuild".to_string(),
-            Project::Go => "go".to_string(),
-            Project::GCC => "gcc".to_string(),
-            Project::GXX => "g++".to_string(),
-            Project::Clang => "clang".to_string(),
-            Project::ClangXX => "clang++".to_string(),
+            Project::ZigSafe => ZIGSAFE.to_string(),
+            Project::ZigFast => ZIGFAST.to_string(),
+            Project::ZigSmall => ZIGSMALL.to_string(),
+            Project::ZigCC => ZIGCC.to_string(),
+            Project::ZigCXX => ZIGCXX.to_string(),
+            Project::Cargo => CARGO.to_string(),
+            Project::CargoZigbuild => CARGO_ZIGBUILD.to_string(),
+            Project::Go => GO.to_string(),
+            Project::GCC => GCC.to_string(),
+            Project::GXX => GXX.to_string(),
+            Project::Clang => CLANG.to_string(),
+            Project::ClangXX => CLANGXX.to_string(),
         }
     }
 }
@@ -84,7 +105,6 @@ impl ToString for Project {
 impl Project {
     pub fn rich(&self) -> &str {
         match self {
-            Project::Zig => "Zig",
             Project::ZigCC => "C (Zig)",
             Project::ZigCXX => "C++ (Zig)",
             Project::Cargo => "Rust",
@@ -94,21 +114,27 @@ impl Project {
             Project::GXX => "C++ (GCC)",
             Project::Clang => "C (Clang)",
             Project::ClangXX => "C++ (Clang)",
+            Project::ZigSafe => "Zig (Safe)",
+            Project::ZigFast => "Zig (Fast)",
+            Project::ZigSmall => "Zig (Small)",
+            
         }
     }
 
     pub fn from_str(nametype: &str) -> Option<Project> {
         match nametype {
-            "zig" => Some(Project::Zig),
-            "zigcc" => Some(Project::ZigCC),
-            "ZigCXX" => Some(Project::ZigCXX),
-            "cargo" => Some(Project::Cargo),
-            "cargo-zigbuild" => Some(Project::CargoZigbuild),
-            "go" => Some(Project::Go),
-            "gcc" => Some(Project::GCC),
-            "g++" => Some(Project::GXX),
-            "clang" => Some(Project::Clang),
-            "clang++" => Some(Project::ClangXX),
+            ZIGCC => Some(Project::ZigCC),
+            ZIGCXX => Some(Project::ZigCXX),
+            CARGO => Some(Project::Cargo),
+            CARGO_ZIGBUILD => Some(Project::CargoZigbuild),
+            GO => Some(Project::Go),
+            GCC => Some(Project::GCC),
+            GXX => Some(Project::GXX),
+            CLANG => Some(Project::Clang),
+            CLANGXX => Some(Project::ClangXX),
+            ZIGSAFE => Some(Project::ZigSafe),
+            ZIGSMALL => Some(Project::ZigSmall),
+            ZIGFAST => Some(Project::ZigFast),
             _ => None
         }
     }
@@ -116,24 +142,28 @@ impl Project {
     pub fn build(&self, path: impl AsRef<Path>, cwd: PathBuf, verbose: bool) -> io::Result<()> {
         // Check if the binary name can be used
         if let Some(binname_os) = path.as_ref().file_name() {
-            if let Some(binname) = binname_os.to_str().and_then(|x| Some(x.to_string())) {
+            if let Some(fname) = binname_os.to_str().and_then(|x| Some(x.to_string())) {
                 // Get outdir
                 let outdir = cwd.join("build/");
 
-                // Outfile for Windows
+                // Binname for Windows
                 #[cfg(target_os = "windows")]
-                let outfile = outdir.join(binname.add(".exe"));
+                let binname = fname.add(".exe");
 
-                // Outfile for !Windows
                 #[cfg(not(target_os = "windows"))]
+                let binname = fname;
+
+                // Set Outfile Path
                 let outfile = outdir.join(binname.as_str());
 
                 // Run build command
                 return match self {
-                    Project::Zig => zig::zig(path, cwd, binname, outfile, verbose),
+                    Project::ZigFast => zig::zigfast(path, binname, outfile, verbose),
+                    Project::ZigSmall => zig::zigsmall(path, binname, outfile, verbose),
+                    Project::ZigSafe => zig::zigsafe(path, binname, outfile, verbose),
                     Project::ZigCC => zig::zigcc(path, outfile, verbose),
                     Project::ZigCXX => zig::zigcxx(path, outfile, verbose),
-                    Project::Cargo => cargo::zigbuild(path, binname, outfile, verbose),
+                    Project::Cargo => cargo::build(path, binname, outfile, verbose),
                     Project::CargoZigbuild => cargo::zigbuild(path, binname, outfile, verbose),
                     Project::Go => go::build(path, outfile, verbose),
                     Project::GCC => gcc::cc(path, outfile, verbose),
