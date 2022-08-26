@@ -8,7 +8,8 @@ use super::execute;
 /// Runs the `cargo build --release` command.
 pub fn build(path: impl AsRef<Path>, cwd: PathBuf, binname: String, outfile: PathBuf, verbose: bool) -> io::Result<()> {
     // cargo build --release in project subdir
-    let cmd = Command::new("cargo").args(["build", "--release"]).current_dir(path);
+    let mut cmd = Command::new("cargo");
+    cmd.args(["build", "--release"]).current_dir(path);
     execute(cmd, verbose)
 }
 
@@ -17,6 +18,7 @@ pub fn build(path: impl AsRef<Path>, cwd: PathBuf, binname: String, outfile: Pat
 /// Runs `cargo zigbuild --release`.
 pub fn zigbuild(path: impl AsRef<Path>, cwd: PathBuf, binname: String, outfile: PathBuf, verbose: bool) -> io::Result<()> {
     // cargo zigbuild --release in project subdir
-    let cmd = Command::new("cargo").args(["zigbuild", "--release"]).current_dir(path);
+    let mut cmd = Command::new("cargo");
+    cmd.args(["zigbuild", "--release"]).current_dir(path);
     execute(cmd, verbose)
 }

@@ -32,13 +32,13 @@ pub mod go;
 /// Execute Command
 /// 
 /// Executes a Command, optionally in a verbose manner
-pub fn execute(cmd: &mut Command, verbose: bool) -> io::Result<()> {
+pub fn execute(cmd: Command, verbose: bool) -> io::Result<()> {
     // Bind stdout and stderr to shell if verbose flag is set
     if verbose {
-        return shell(*cmd);
+        return shell(cmd);
     }
     // Use result runner, but ignore output
-    silent(*cmd)
+    silent(cmd)
 }
 
 /// C Command
@@ -46,15 +46,16 @@ pub fn execute(cmd: &mut Command, verbose: bool) -> io::Result<()> {
 /// Function to build a C command because I don't want to repeat myself...
 pub fn c_command(cc: &str, path: impl AsRef<Path>, outfile: PathBuf) -> io::Result<Command> {
     // Get C source files
-    let cfiles = list_files_recursive(path, "c")?;
-    let hfiles = list_files_recursive(path, "h")?;
+    let cfiles = list_files_recursive(path.as_ref(), "c")?;
+    let hfiles = list_files_recursive(path.as_ref(), "h")?;
         
     // Create gcc command, set output and cwd
-    let cmd = Command::new(cc).arg("-o").arg(outfile).current_dir(path)
+    let mut cmd = Command::new(cc);
+    cmd.arg("-o").arg(outfile).current_dir(path)
     // Set source files and Opt-Level
     .arg("-O3").args(cfiles).args(hfiles);
 
-    Ok(*cmd)
+    Ok(cmd)
 }
 
 /// C++ Command
@@ -62,15 +63,15 @@ pub fn c_command(cc: &str, path: impl AsRef<Path>, outfile: PathBuf) -> io::Resu
 /// Function to build a C++ command because I don't want to repeat myself... The irony...
 pub fn cxx_command(cc: &str, path: impl AsRef<Path>, outfile: PathBuf) -> io::Result<Command> {
     // Get C++ source files
-    let cppfiles = list_files_recursive(path, "cpp")?;
-    let hppfiles = list_files_recursive(path, "hpp")?;
+    let cppfiles = list_files_recursive(path.as_ref(), "cpp")?;
+    let hppfiles = list_files_recursive(path.as_ref(), "hpp")?;
 
     // Get C build command
-    let cmd = c_command(cc, path, outfile)?
+    let mut cmd = c_command(cc, path, outfile)?;
     // Append C++ and H++ source files
-    .args(cppfiles).args(hppfiles);
+    cmd.args(cppfiles).args(hppfiles);
 
-    Ok(*cmd)
+    Ok(cmd)
 }
 
 /// List Directory Entries

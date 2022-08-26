@@ -10,7 +10,7 @@ pub fn cc(path: impl AsRef<Path>, cwd: PathBuf, binname: String, outfile: PathBu
     let cmd = c_command("clang", path, outfile)?;
 
     // Run build command
-    execute(&mut cmd, verbose)
+    execute(cmd, verbose)
 }
 
 /// Clang++
@@ -21,5 +21,5 @@ pub fn cxx(path: impl AsRef<Path>, cwd: PathBuf, binname: String, outfile: PathB
     let cmd = cxx_command("clang++", path, outfile)?;
 
     // Run build command
-    execute(&mut cmd, verbose)
+    execute(cmd, verbose)
 }

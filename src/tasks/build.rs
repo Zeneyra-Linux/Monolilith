@@ -9,10 +9,8 @@ use crate::config::{config, Project};
 /// Builds the Project listed in the `monolilith.json` file.
 /// Returns an [Error](io::Error) if it can't read or parse the config.
 pub fn build(verbose: bool) -> Result<u128, io::Error> {
-    let cwd = current_dir()?;
-
     // Create build output folder
-    if let Err(err) = fs::create_dir(cwd.join("build/")) {
+    if let Err(err) = fs::create_dir(current_dir()?.join("build/")) {
         match err.kind() {
             // Do nothing if the directory already exists
             io::ErrorKind::AlreadyExists => {},
@@ -42,7 +40,7 @@ pub fn build(verbose: bool) -> Result<u128, io::Error> {
         .print(entry.1.rich(), Colors::CyanBright)
         .println(")...", Colors::Cyan);
 
-        if let Err(err) = entry.1.build(&entry.0, cwd, verbose) {
+        if let Err(err) = entry.1.build(&entry.0, current_dir()?, verbose) {
             // TODO: Handle returned Errors here and print info message
         } else {
             // TODO: Print success info message

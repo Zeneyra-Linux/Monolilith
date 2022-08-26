@@ -126,7 +126,7 @@ impl Project {
 
                 // Outfile for !Windows
                 #[cfg(not(target_os = "windows"))]
-                let outfile = outdir.join(binname);
+                let outfile = outdir.join(binname.as_str());
 
                 // Run build command
                 return match self {
@@ -135,9 +135,9 @@ impl Project {
                     Project::ZigCXX => zig::zigcxx(path, cwd, binname, outfile, verbose),
                     Project::Cargo => cargo::zigbuild(path, cwd, binname, outfile, verbose),
                     Project::CargoZigbuild => cargo::zigbuild(path, cwd, binname, outfile, verbose),
-                    Project::Go => go::build(path, cwd, binname, outfile, verbose),
-                    Project::GCC => gcc::cc(path, cwd, binname, outfile, verbose),
-                    Project::GXX => gcc::cxx(path, cwd, binname, outfile, verbose),
+                    Project::Go => go::build(path, outfile, verbose),
+                    Project::GCC => gcc::cc(path, outfile, verbose),
+                    Project::GXX => gcc::cxx(path, outfile, verbose),
                     Project::Clang => clang::cc(path, cwd, binname, outfile, verbose),
                     Project::ClangXX => clang::cxx(path, cwd, binname, outfile, verbose),
                 }
