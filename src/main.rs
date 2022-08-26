@@ -15,7 +15,14 @@ fn main() -> ExitCode {
         match args.get(1).unwrap().as_str() {
             "build" => {
                 // Special Build Handle
-                return build_handle(&mut prnt, args, 2);
+                if let Some("-v" | "--verbose") = args.get(2).and_then(|x| Some(x.as_str())) {
+                    return build_handle(&mut prnt, true);
+                }
+                return build_handle(&mut prnt, false);
+            },
+            "-v" | "--verbose" => {
+                // Verbose
+                return build_handle(&mut prnt, true);
             },
             "init" => {
                 // Special Init Handle
@@ -57,7 +64,7 @@ fn main() -> ExitCode {
             }
         }
     } else {
-        return build_handle(&mut prnt, args, 1);
+        return build_handle(&mut prnt, false);
     }
     ExitCode::SUCCESS
 }
@@ -82,13 +89,7 @@ fn result_handle(prnt: &mut Printer, res: Result<(), Error>, success_message: &s
 /// Build Handle
 /// 
 /// Handles the build command.
-fn build_handle(prnt: &mut Printer, args: Vec<String>, position: usize) -> ExitCode {
-    // Check if -v or --verbose is present as `monolilith build --verbose` or `monolilith --verbose` and set verbose to true
-    let mut verbose = false;
-    if let Some("-v" | "--verbose") = args.get(position).and_then(|x| Some(x.as_str())) {
-        verbose = true;
-    }
-
+fn build_handle(prnt: &mut Printer, verbose: bool) -> ExitCode {
     let failed = match tasks::build(verbose) {
         Ok(failed) => failed,
         Err(_) => {
