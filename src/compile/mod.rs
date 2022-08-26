@@ -29,7 +29,6 @@ pub mod clang;
 /// Module for Go-specific commands
 pub mod go;
 
-
 /// Execute Command
 /// 
 /// Executes a Command, optionally in a verbose manner
@@ -40,6 +39,38 @@ pub fn execute(cmd: &mut Command, verbose: bool) -> io::Result<()> {
     }
     // Use result runner, but ignore output
     silent(*cmd)
+}
+
+/// C Command
+/// 
+/// Function to build a C command because I don't want to repeat myself...
+pub fn c_command(cc: &str, path: impl AsRef<Path>, outfile: PathBuf) -> io::Result<Command> {
+    // Get C source files
+    let cfiles = list_files_recursive(path, "c")?;
+    let hfiles = list_files_recursive(path, "h")?;
+        
+    // Create gcc command, set output and cwd
+    let cmd = Command::new(cc).arg("-o").arg(outfile).current_dir(path)
+    // Set source files and Opt-Level
+    .arg("-O3").args(cfiles).args(hfiles);
+
+    Ok(*cmd)
+}
+
+/// C++ Command
+/// 
+/// Function to build a C++ command because I don't want to repeat myself... The irony...
+pub fn cxx_command(cc: &str, path: impl AsRef<Path>, outfile: PathBuf) -> io::Result<Command> {
+    // Get C++ source files
+    let cppfiles = list_files_recursive(path, "cpp")?;
+    let hppfiles = list_files_recursive(path, "hpp")?;
+
+    // Get C build command
+    let cmd = c_command(cc, path, outfile)?
+    // Append C++ and H++ source files
+    .args(cppfiles).args(hppfiles);
+
+    Ok(*cmd)
 }
 
 /// List Directory Entries
@@ -88,7 +119,7 @@ pub fn list_files(dir: impl AsRef<Path>, ext: &str) -> io::Result<Vec<PathBuf>> 
     .filter(|x| {
         if let Some(extension) = x.0.path().extension() {
             if let Ok(extend) = extension.to_owned().into_string() {
-                return extend.ends_with(ext);
+                return extend == ext;
             }
         }
         false
