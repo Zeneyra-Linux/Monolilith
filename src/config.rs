@@ -131,15 +131,15 @@ impl Project {
                 // Run build command
                 return match self {
                     Project::Zig => zig::zig(path, cwd, binname, outfile, verbose),
-                    Project::ZigCC => zig::zigcc(path, cwd, binname, outfile, verbose),
-                    Project::ZigCXX => zig::zigcxx(path, cwd, binname, outfile, verbose),
-                    Project::Cargo => cargo::zigbuild(path, cwd, binname, outfile, verbose),
-                    Project::CargoZigbuild => cargo::zigbuild(path, cwd, binname, outfile, verbose),
+                    Project::ZigCC => zig::zigcc(path, outfile, verbose),
+                    Project::ZigCXX => zig::zigcxx(path, outfile, verbose),
+                    Project::Cargo => cargo::zigbuild(path, binname, outfile, verbose),
+                    Project::CargoZigbuild => cargo::zigbuild(path, binname, outfile, verbose),
                     Project::Go => go::build(path, outfile, verbose),
                     Project::GCC => gcc::cc(path, outfile, verbose),
                     Project::GXX => gcc::cxx(path, outfile, verbose),
-                    Project::Clang => clang::cc(path, cwd, binname, outfile, verbose),
-                    Project::ClangXX => clang::cxx(path, cwd, binname, outfile, verbose),
+                    Project::Clang => clang::cc(path, outfile, verbose),
+                    Project::ClangXX => clang::cxx(path, outfile, verbose),
                 }
             }
         }

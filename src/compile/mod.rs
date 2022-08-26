@@ -44,13 +44,20 @@ pub fn execute(cmd: Command, verbose: bool) -> io::Result<()> {
 /// C Command
 /// 
 /// Function to build a C command because I don't want to repeat myself...
-pub fn c_command(cc: &str, path: impl AsRef<Path>, outfile: PathBuf) -> io::Result<Command> {
+pub fn c_command(cc: &str, arg1: Option<&str>, path: impl AsRef<Path>, outfile: PathBuf) -> io::Result<Command> {
     // Get C source files
     let cfiles = list_files_recursive(path.as_ref(), "c")?;
     let hfiles = list_files_recursive(path.as_ref(), "h")?;
         
-    // Create gcc command, set output and cwd
+    // Create gcc command
     let mut cmd = Command::new(cc);
+
+    // Append arg1, for Zig only I guess
+    if let Some(viparg) = arg1 {
+        cmd.arg(viparg);
+    }
+
+    // Set output and cwd
     cmd.arg("-o").arg(outfile).current_dir(path)
     // Set source files and Opt-Level
     .arg("-O3").args(cfiles).args(hfiles);
@@ -61,13 +68,13 @@ pub fn c_command(cc: &str, path: impl AsRef<Path>, outfile: PathBuf) -> io::Resu
 /// C++ Command
 /// 
 /// Function to build a C++ command because I don't want to repeat myself... The irony...
-pub fn cxx_command(cc: &str, path: impl AsRef<Path>, outfile: PathBuf) -> io::Result<Command> {
+pub fn cxx_command(cc: &str, arg1: Option<&str>, path: impl AsRef<Path>, outfile: PathBuf) -> io::Result<Command> {
     // Get C++ source files
     let cppfiles = list_files_recursive(path.as_ref(), "cpp")?;
     let hppfiles = list_files_recursive(path.as_ref(), "hpp")?;
 
     // Get C build command
-    let mut cmd = c_command(cc, path, outfile)?;
+    let mut cmd = c_command(cc, arg1, path, outfile)?;
     // Append C++ and H++ source files
     cmd.args(cppfiles).args(hppfiles);
 

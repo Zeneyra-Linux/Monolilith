@@ -7,7 +7,7 @@ use super::{execute, c_command, cxx_command};
 /// Compiles a C project with GCC.
 pub fn cc(path: impl AsRef<Path>, outfile: PathBuf, verbose: bool) -> io::Result<()> {
     // Get C build command
-    let cmd = c_command("gcc", path, outfile)?;
+    let cmd = c_command("gcc", None, path, outfile)?;
 
     // Run build command
     execute(cmd, verbose)
@@ -18,7 +18,7 @@ pub fn cc(path: impl AsRef<Path>, outfile: PathBuf, verbose: bool) -> io::Result
 /// Compiles a C++ project with GCC.
 pub fn cxx(path: impl AsRef<Path>, outfile: PathBuf, verbose: bool) -> io::Result<()> {
     // Get C++ build command
-    let cmd = cxx_command("gcc", path, outfile)?;
+    let cmd = cxx_command("gcc", None, path, outfile)?;
 
     // Run build command
     execute(cmd, verbose)
