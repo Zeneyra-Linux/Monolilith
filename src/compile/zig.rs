@@ -1,6 +1,6 @@
 use std::io;
 use std::path::{Path, PathBuf};
-use kagero::runner::{shell, result};
+use super::execute;
 
 /// Zig CC
 /// 

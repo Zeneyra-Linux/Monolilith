@@ -1,6 +1,8 @@
 use std::path::{Path, PathBuf};
 use std::fs;
 use std::io;
+use std::process::Command;
+use kagero::runner::{shell, silent};
 
 /// Cargo
 /// 
@@ -27,6 +29,18 @@ pub mod clang;
 /// Module for Go-specific commands
 pub mod go;
 
+
+/// Execute Command
+/// 
+/// Executes a Command, optionally in a verbose manner
+pub fn execute(cmd: &mut Command, verbose: bool) -> io::Result<()> {
+    // Bind stdout and stderr to shell if verbose flag is set
+    if verbose {
+        return shell(*cmd);
+    }
+    // Use result runner, but ignore output
+    silent(*cmd)
+}
 
 /// List Directory Entries
 /// 

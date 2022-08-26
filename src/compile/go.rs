@@ -1,8 +1,7 @@
 use std::io;
 use std::path::{Path, PathBuf};
 use std::process::Command;
-use kagero::runner::{shell, result};
-use super::list_files;
+use super::{list_files, execute};
 
 /// Go
 /// 
@@ -19,9 +18,5 @@ pub fn build(path: impl AsRef<Path>, cwd: PathBuf, binname: String, outfile: Pat
     // Set output and ldflags
     .arg("-o").arg(outfile).arg("-ldflags=\"-s -w\"");
 
-    if verbose {
-        return shell(*cmd);
-    }
-    // Use result runner, but ignore output
-    Ok(_ = result(*cmd)?)
+    execute(cmd, verbose)
 }
