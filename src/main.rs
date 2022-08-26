@@ -5,6 +5,7 @@ use std::process::ExitCode;
 
 mod config;
 mod meta;
+mod help;
 mod tasks;
 mod compile;
 
@@ -44,12 +45,15 @@ fn main() -> ExitCode {
                 return result_handle(&mut prnt, res, "Successfully removed project!");
             },
             "help" | "-h" | "--help" => {
-                // TODO: Print help for the app or a specific command
+                // Help
+                help::help(&mut prnt);
             },
             "version" | "-V" | "--version" => {
+                // Version
                 meta::version(&mut prnt);
             },
             "info" => {
+                // Info
                 meta::info(&mut prnt);
             },
             cmd => {
@@ -103,7 +107,7 @@ fn build_handle(prnt: &mut Printer, verbose: bool) -> ExitCode {
         }
     };
     if failed > 0 {
-        prnt.errorln(format!("{} projects failed to build!", failed).as_str(), Colors::RedBright);
+        prnt.errorln(format!("{} project(s) failed to build!", failed).as_str(), Colors::RedBright);
         return ExitCode::FAILURE;
     }
     ExitCode::SUCCESS

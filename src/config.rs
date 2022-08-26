@@ -174,6 +174,6 @@ impl Project {
             }
         }
         // Return Error
-        Err(io::Error::new(io::ErrorKind::OutOfMemory, "Cannot read binary name"))
+        Err(io::Error::new(io::ErrorKind::InvalidData, "Cannot read binary name"))
     }
 }
