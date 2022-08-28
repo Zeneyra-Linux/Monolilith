@@ -8,7 +8,7 @@ use serde_json::to_string_pretty;
 /// Removes a project from the `monolilith.json` file.
 pub fn remove(args: Vec<String>) -> Result<(), io::Error> {
     if args.len() < 3 {
-        return Err(io::Error::new(io::ErrorKind::NotFound, "Missing Project Name"));
+        return Err(io::Error::new(io::ErrorKind::NotFound, "Missing Project Name!"));
     }
 
     let mut database = config()?;
@@ -17,7 +17,7 @@ pub fn remove(args: Vec<String>) -> Result<(), io::Error> {
     if let None = database.remove(&project) {
         return Err(io::Error::new(
             io::ErrorKind::NotFound,
-            format!("Project {} not found", project)
+            format!("Project {} not found!", project)
         ));
     }
 

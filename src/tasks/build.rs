@@ -34,7 +34,7 @@ pub fn build(verbose: bool) -> Result<u128, Error> {
     // State that there are no projects if the table is empty
     let table: Vec<(String, Project)> = projects.collect();
     if table.len() < 1 {
-        printer.println("monolilith.json is empty", Colors::BlueBright);
+        printer.println("monolilith.json is empty!", Colors::BlueBright);
         return Ok(0);
     }
 
@@ -43,9 +43,9 @@ pub fn build(verbose: bool) -> Result<u128, Error> {
         // Info Message
         printer.print("Compiling ", Colors::Cyan)
         .print(&entry.0, Colors::CyanBright)
-        .print(" (", Colors::Cyan)
+        .print(" for ", Colors::Cyan)
         .print(entry.1.rich(), Colors::CyanBright)
-        .println(")...", Colors::Cyan);
+        .println("...", Colors::Cyan);
 
         if let Err(err) = entry.1.build(&entry.0, current_dir()?, verbose) {
             // Increment failed project count   
