@@ -47,14 +47,14 @@ pub fn build(verbose: bool) -> Result<u128, Error> {
         .print(entry.1.rich(), Colors::CyanBright)
         .println("...", Colors::Cyan);
 
-        if let Err(err) = entry.1.build(&entry.0, current_dir()?, verbose) {
+        if let Err(err) = entry.1.build(current_dir()?.join(&entry.0), current_dir()?, verbose) {
             // Increment failed project count   
             failed += 1;
 
             // Tell user the issue
-            printer.print("Could not build ", Colors::RedBright)
-            .print(&entry.0, Colors::Red)
-            .println("...", Colors::RedBright);
+            printer.print("Could not build ", Colors::Red)
+            .print(&entry.0, Colors::RedBright)
+            .println("...", Colors::Red);
             
             // Print the cause
             match err.kind() {
