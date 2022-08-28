@@ -59,12 +59,13 @@ pub fn build(verbose: bool) -> Result<u128, Error> {
             // Print the cause
             match err.kind() {
                 // TODO: Add precise error explainations here in the future
+                ErrorKind::NotFound => printer.errorln("A file or directory is missing!", Colors::Red),
                 _ => printer.errorln(err.to_string().as_str(), Colors::Red)
             };
         } else {
             printer.print("Successfully built ", Colors::Green)
             .print(&entry.0, Colors::GreenBright)
-            .println("!", Colors::GreenBright);
+            .println("!", Colors::Green);
 
         }
         // New line

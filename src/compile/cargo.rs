@@ -16,7 +16,7 @@ pub fn build(path: impl AsRef<Path>, binname: String, outfile: PathBuf, verbose:
     execute(cmd, verbose)?;
 
     // Copy resulting binary into output folder
-    let buildfile = path.as_ref().join("target/").join(binname);
+    let buildfile = path.as_ref().join("target/release/").join(binname);
     fs::copy(buildfile, outfile)?;
     Ok(())
 }
@@ -33,7 +33,7 @@ pub fn zigbuild(path: impl AsRef<Path>, binname: String, outfile: PathBuf, verbo
     execute(cmd, verbose)?;
 
     // Copy resulting binary into output folder
-    let buildfile = path.as_ref().join("target/").join(binname);
+    let buildfile = path.as_ref().join("target/release/").join(binname);
     fs::copy(buildfile, outfile)?;
     Ok(())
 }
