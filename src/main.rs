@@ -109,6 +109,8 @@ fn build_handle(prnt: &mut Printer, verbose: bool) -> ExitCode {
     if failed > 0 {
         prnt.errorln(format!("{} project(s) failed to build!", failed).as_str(), Colors::YellowBright);
         return ExitCode::FAILURE;
+    } else {
+        prnt.println("All projects were successfully built!", Colors::MagentaBright);
     }
     ExitCode::SUCCESS
 }
