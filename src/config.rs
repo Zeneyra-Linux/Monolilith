@@ -5,6 +5,9 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use crate::compile::*;
 
+#[cfg(target_os = "windows")]
+use std::ops::Add;
+
 /// Config Wrapper
 /// 
 /// Wrapper for [read_config] and [parse_config]
