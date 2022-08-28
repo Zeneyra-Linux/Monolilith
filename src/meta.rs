@@ -1,17 +1,17 @@
-const VERSION: &str = env!("CARGO_PKG_VERSION");
-const NAME: &str = env!("CARGO_PKG_NAME");
-const NAME_RICH: &str = "Monolilith";
-const REPOSITORY: &str = env!("CARGO_PKG_REPOSITORY");
-const DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
-const LICENSE: &str = "EUPL-1.2";
-const LICENSE_RICH: &str = "European Union Public License 1.2";
+pub const VERSION: &str = env!("CARGO_PKG_VERSION");
+pub const NAME: &str = env!("CARGO_PKG_NAME");
+pub const NAME_RICH: &str = "Monolilith";
+pub const REPOSITORY: &str = env!("CARGO_PKG_REPOSITORY");
+pub const DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
+pub const LICENSE: &str = "EUPL-1.2";
+pub const LICENSE_RICH: &str = "European Union Public License 1.2";
 
 // Build Script Metadata
-const CARGO_VERSION: &str = env!("CARGO_VERSION");
-const RUSTC_VERSION: &str = env!("RUSTC_VERSION");
-const COMPILE_DATE: &str = env!("COMPILE_DATE");
-static GIT_BRANCH_TAG: Option<&str> = option_env!("GIT_BRANCH_TAG");
-static GIT_HASH: Option<&str> = option_env!("GIT_HASH");
+pub const CARGO_VERSION: &str = env!("CARGO_VERSION");
+pub const RUSTC_VERSION: &str = env!("RUSTC_VERSION");
+pub const COMPILE_DATE: &str = env!("COMPILE_DATE");
+pub static GIT_BRANCH_TAG: Option<&str> = option_env!("GIT_BRANCH_TAG");
+pub static GIT_HASH: Option<&str> = option_env!("GIT_HASH");
 
 use kagero::printer::{Printer, Colors};
 use std::env::consts::{ARCH, OS};

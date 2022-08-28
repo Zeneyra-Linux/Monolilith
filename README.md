@@ -6,6 +6,10 @@ Simple Build System for Monorepos
 ```sh
 cargo install monolilith
 ```
+or 
+```sh
+RUSTFLAGS="-C target-cpu=native" cargo install monolilith
+```
 
 ## Kagero
 WIP.
@@ -15,7 +19,7 @@ WIP.
 2. Go into the directory: `cd Monolilith`
 3. Install or build the application: `cargo install --path .` or `cargo build --release`
 
-Optionally, you can add `RUSTFLAGS="-C target-cpu=native"` in front of the command to optimize the application for your CPU. Same goes for [installing with Cargo](#cargo)
+Optionally, you can add `RUSTFLAGS="-C target-cpu=native"` in front of the command like above to optimize the application for your CPU.
 
 # Usage
 ## Project structure
@@ -35,8 +39,8 @@ Example:
 You can use `monolilith init` to create an empty file. The subproject folder should also match the project name and resulting binary.
 
 ## Adding and removing
-Use `monolilith add <PathToProject> <ProjectType>` to add a new project or `monolilith remove <PathToProject>`.  
-Note that PathToProject must be formatted like [above](#project-structure).
+Use `monolilith add <ProjectPath> <ProjectType>` to add a new project or `monolilith remove <ProjectPath>`.  
+Note that ProjectPath must be formatted like [above](#project-structure).
 
 ## Building
 Just run `monolilith` and it will build all the projects and put the result into `build/`.
