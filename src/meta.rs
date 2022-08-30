@@ -10,6 +10,7 @@ pub const LICENSE_RICH: &str = "European Union Public License 1.2";
 pub const CARGO_VERSION: &str = env!("CARGO_VERSION");
 pub const RUSTC_VERSION: &str = env!("RUSTC_VERSION");
 pub const COMPILE_DATE: &str = env!("COMPILE_DATE");
+pub const TARGET_TRIPLE: &str = env!("TARGET");
 pub static GIT_BRANCH_TAG: Option<&str> = option_env!("GIT_BRANCH_TAG");
 pub static GIT_HASH: Option<&str> = option_env!("GIT_HASH");
 
@@ -35,6 +36,9 @@ pub fn info(printer: &mut Printer) {
 
     // OS
     printer.print("OS: ", Colors::Cyan).writeln(OS);
+
+    // Target
+    printer.print("Target: ", Colors::Cyan).writeln(TARGET_TRIPLE);
 
     // Git Branch/Tag and Hash
     printer.print("Build: ", Colors::Cyan);

@@ -1,9 +1,13 @@
 use std::process::Command;
 use std::path::Path;
 use std::io;
+use std::env;
 use chrono::Utc;
 
 fn main() {
+    // ----- Target Triple -----
+    println!("cargo:rustc-env=TARGET={}", env::var("TARGET").unwrap());
+
     // ----- Rust Version -----
     println!("cargo:rustc-env=CARGO_VERSION={}", version("cargo"));
     println!("cargo:rustc-env=RUSTC_VERSION={}", version("rustc"));
