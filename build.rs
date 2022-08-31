@@ -6,7 +6,7 @@ use chrono::Utc;
 
 fn main() {
     // ----- Target Triple -----
-    println!("cargo:rustc-env=TARGET_ENV={}", env::var("CARGO_CFG_TARGET_ENV").unwrap());
+    println!("cargo:rustc-env=TARGET={}", env::var("TARGET").unwrap());
 
     // ----- Rust Version -----
     println!("cargo:rustc-env=CARGO_VERSION={}", version("cargo"));
