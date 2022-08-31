@@ -29,6 +29,7 @@ pub mod clang;
 /// Module for Go-specific commands
 pub mod go;
 
+
 /// Execute Command
 /// 
 /// Executes a Command, optionally in a verbose manner
@@ -60,7 +61,7 @@ pub fn c_command(cc: &str, arg1: Option<&str>, path: impl AsRef<Path>, outfile: 
     // Set output and cwd
     cmd.arg("-o").arg(outfile).current_dir(path)
     // Set source files and Opt-Level
-    .arg("-O3").args(cfiles).args(hfiles);
+    .arg("-O3").arg("-s").arg("-w").args(cfiles).args(hfiles);
 
     Ok(cmd)
 }

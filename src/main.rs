@@ -97,11 +97,11 @@ fn build_handle(prnt: &mut Printer, verbose: bool) -> ExitCode {
     let failed = match tasks::build(verbose) {
         Ok(failed) => failed,
         Err(_) => {
-            prnt.errorln("Could not read monolilith.json, create the output folder or get the current directory!", Colors::RedBright);
+            prnt.errorln("Could not read monolilith.json or create the output folder!", Colors::RedBright);
 
             prnt.error("Please run ", Colors::Red);
             prnt.error("monolilith init", Colors::RedBright);
-            prnt.errorln(" to initialize a new build if you haven't already and make sure you have read and write access.", Colors::Red);
+            prnt.errorln(" and make sure you have read and write access.", Colors::Red);
             
             return ExitCode::FAILURE;
         }

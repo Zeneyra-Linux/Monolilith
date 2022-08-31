@@ -17,6 +17,16 @@ pub fn build(verbose: bool) -> Result<u128, Error> {
         None
     });
 
+    // Printer
+    let mut printer = Printer::default();
+
+    // State that there are no projects if the table is empty
+    let table: Vec<(String, Project)> = projects.collect();
+    if table.len() < 1 {
+        printer.println("monolilith.json is empty!", Colors::BlueBright);
+        return Ok(0);
+    }
+
     // Create build output folder
     if let Err(err) = fs::create_dir(current_dir()?.join("build/")) {
         match err.kind() {
@@ -26,17 +36,8 @@ pub fn build(verbose: bool) -> Result<u128, Error> {
         }
     }
 
-    // Printer
-    let mut printer = Printer::default();
     // Count for failed Project
     let mut failed = 0;
-
-    // State that there are no projects if the table is empty
-    let table: Vec<(String, Project)> = projects.collect();
-    if table.len() < 1 {
-        printer.println("monolilith.json is empty!", Colors::BlueBright);
-        return Ok(0);
-    }
 
     // Build each project
     for entry in table {
@@ -59,12 +60,13 @@ pub fn build(verbose: bool) -> Result<u128, Error> {
             // Print the cause
             match err.kind() {
                 // TODO: Add precise error explainations here in the future
+                ErrorKind::NotFound => printer.errorln("A file or directory is missing!", Colors::Red),
                 _ => printer.errorln(err.to_string().as_str(), Colors::Red)
             };
         } else {
             printer.print("Successfully built ", Colors::Green)
             .print(&entry.0, Colors::GreenBright)
-            .println("!", Colors::GreenBright);
+            .println("!", Colors::Green);
 
         }
         // New line

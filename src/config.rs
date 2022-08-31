@@ -37,18 +37,18 @@ pub fn parse_config(data: &str) -> Result<HashMap<String, String>, serde_json::E
 }
 
 
-pub const ZIGSAFE: &str = "zigsafe";
-pub const ZIGFAST: &str = "zigfast";
-pub const ZIGSMALL: &str = "zigsmall";
-pub const ZIGCC: &str = "zigcc";
-pub const ZIGCXX: &str = "zigc++";
-pub const CARGO: &str = "cargo";
-pub const CARGO_ZIGBUILD: &str = "cargo-zigbuild";
-pub const GO: &str = "go";
-pub const GCC: &str = "gcc";
-pub const GXX: &str = "g++";
-pub const CLANG: &str = "clang";
-pub const CLANGXX: &str = "clang++";
+const ZIGSAFE: &str = "zigsafe";
+const ZIGFAST: &str = "zigfast";
+const ZIGSMALL: &str = "zigsmall";
+const ZIGCC: &str = "zigcc";
+const ZIGCXX: &str = "zigc++";
+const CARGO: &str = "cargo";
+const CARGO_ZIGBUILD: &str = "cargo-zigbuild";
+const GO: &str = "go";
+const GCC: &str = "gcc";
+const GXX: &str = "g++";
+const CLANG: &str = "clang";
+const CLANGXX: &str = "clang++";
 
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -81,7 +81,7 @@ impl AsRef<str> for Project {
             Project::GCC => GCC,
             Project::GXX => GXX,
             Project::Clang => CLANG,
-            Project::ClangXX => CLANGXX,
+            Project::ClangXX => CLANGXX
         }
     }
 }
@@ -100,7 +100,7 @@ impl ToString for Project {
             Project::GCC => GCC.to_string(),
             Project::GXX => GXX.to_string(),
             Project::Clang => CLANG.to_string(),
-            Project::ClangXX => CLANGXX.to_string(),
+            Project::ClangXX => CLANGXX.to_string()
         }
     }
 }
@@ -119,8 +119,7 @@ impl Project {
             Project::ClangXX => "C++ (Clang)",
             Project::ZigSafe => "Zig (Safe)",
             Project::ZigFast => "Zig (Fast)",
-            Project::ZigSmall => "Zig (Small)",
-            
+            Project::ZigSmall => "Zig (Small)"            
         }
     }
 
@@ -172,7 +171,7 @@ impl Project {
                     Project::GCC => gcc::cc(path, outfile, verbose),
                     Project::GXX => gcc::cxx(path, outfile, verbose),
                     Project::Clang => clang::cc(path, outfile, verbose),
-                    Project::ClangXX => clang::cxx(path, outfile, verbose),
+                    Project::ClangXX => clang::cxx(path, outfile, verbose)
                 }
             }
         }
