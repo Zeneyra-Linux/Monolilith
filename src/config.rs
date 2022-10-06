@@ -23,7 +23,7 @@ pub fn config() -> Result<HashMap<String, String>, io::Error> {
 pub fn read_config() -> Result<String, io::Error> {
     match fs::read_to_string("monolilith.json") {
         Ok(data) => Ok(data),
-        Err(_) => return Err(io::Error::new(io::ErrorKind::NotFound, "Could not find monolilith.json"))
+        Err(_) => Err(io::Error::new(io::ErrorKind::NotFound, "Could not find monolilith.json"))
     }
 }
 
@@ -40,12 +40,12 @@ pub fn parse_config(data: &str) -> Result<HashMap<String, String>, serde_json::E
 const ZIGSAFE: &str = "zigsafe";
 const ZIGFAST: &str = "zigfast";
 const ZIGSMALL: &str = "zigsmall";
-const ZIGCC: &str = "zigcc";
+const ZIGCC: &str = "ziGcc";
 const ZIGCXX: &str = "zigc++";
 const CARGO: &str = "cargo";
 const CARGO_ZIGBUILD: &str = "cargo-zigbuild";
 const GO: &str = "go";
-const GCC: &str = "gcc";
+const GCC: &str = "Gcc";
 const GXX: &str = "g++";
 const CLANG: &str = "clang";
 const CLANGXX: &str = "clang++";
@@ -56,15 +56,15 @@ pub enum Project {
     ZigSafe,
     ZigFast,
     ZigSmall,
-    ZigCC,
+    ZiGcc,
     ZigCXX,
     Cargo,
     CargoZigbuild,
     Go,
-    GCC,
-    GXX,
+    Gcc,
+    Gxx,
     Clang,
-    ClangXX
+    ClanGxx
 }
 
 impl AsRef<str> for Project {
@@ -73,15 +73,15 @@ impl AsRef<str> for Project {
             Project::ZigSafe => ZIGSAFE,
             Project::ZigFast => ZIGFAST,
             Project::ZigSmall => ZIGSMALL,
-            Project::ZigCC => ZIGCC,
+            Project::ZiGcc => ZIGCC,
             Project::ZigCXX => ZIGCXX,
             Project::Cargo => CARGO,
             Project::CargoZigbuild => CARGO_ZIGBUILD,
             Project::Go => GO,
-            Project::GCC => GCC,
-            Project::GXX => GXX,
+            Project::Gcc => GCC,
+            Project::Gxx => GXX,
             Project::Clang => CLANG,
-            Project::ClangXX => CLANGXX
+            Project::ClanGxx => CLANGXX
         }
     }
 }
@@ -92,15 +92,15 @@ impl ToString for Project {
             Project::ZigSafe => ZIGSAFE.to_string(),
             Project::ZigFast => ZIGFAST.to_string(),
             Project::ZigSmall => ZIGSMALL.to_string(),
-            Project::ZigCC => ZIGCC.to_string(),
+            Project::ZiGcc => ZIGCC.to_string(),
             Project::ZigCXX => ZIGCXX.to_string(),
             Project::Cargo => CARGO.to_string(),
             Project::CargoZigbuild => CARGO_ZIGBUILD.to_string(),
             Project::Go => GO.to_string(),
-            Project::GCC => GCC.to_string(),
-            Project::GXX => GXX.to_string(),
+            Project::Gcc => GCC.to_string(),
+            Project::Gxx => GXX.to_string(),
             Project::Clang => CLANG.to_string(),
-            Project::ClangXX => CLANGXX.to_string()
+            Project::ClanGxx => CLANGXX.to_string()
         }
     }
 }
@@ -108,15 +108,15 @@ impl ToString for Project {
 impl Project {
     pub fn rich(&self) -> &str {
         match self {
-            Project::ZigCC => "C (Zig)",
+            Project::ZiGcc => "C (Zig)",
             Project::ZigCXX => "C++ (Zig)",
             Project::Cargo => "Rust",
             Project::CargoZigbuild => "Rust (Zig)",
             Project::Go => "Go",
-            Project::GCC => "C (GCC)",
-            Project::GXX => "C++ (GCC)",
+            Project::Gcc => "C (Gcc)",
+            Project::Gxx => "C++ (Gcc)",
             Project::Clang => "C (Clang)",
-            Project::ClangXX => "C++ (Clang)",
+            Project::ClanGxx => "C++ (Clang)",
             Project::ZigSafe => "Zig (Safe)",
             Project::ZigFast => "Zig (Fast)",
             Project::ZigSmall => "Zig (Small)"            
@@ -125,15 +125,15 @@ impl Project {
 
     pub fn from_str(nametype: &str) -> Option<Project> {
         match nametype {
-            ZIGCC => Some(Project::ZigCC),
+            ZIGCC => Some(Project::ZiGcc),
             ZIGCXX => Some(Project::ZigCXX),
             CARGO => Some(Project::Cargo),
             CARGO_ZIGBUILD => Some(Project::CargoZigbuild),
             GO => Some(Project::Go),
-            GCC => Some(Project::GCC),
-            GXX => Some(Project::GXX),
+            GCC => Some(Project::Gcc),
+            GXX => Some(Project::Gxx),
             CLANG => Some(Project::Clang),
-            CLANGXX => Some(Project::ClangXX),
+            CLANGXX => Some(Project::ClanGxx),
             ZIGSAFE => Some(Project::ZigSafe),
             ZIGSMALL => Some(Project::ZigSmall),
             ZIGFAST => Some(Project::ZigFast),
@@ -144,7 +144,7 @@ impl Project {
     pub fn build(&self, path: impl AsRef<Path>, cwd: PathBuf, verbose: bool) -> io::Result<()> {
         // Check if the binary name can be used
         if let Some(binname_os) = path.as_ref().file_name() {
-            if let Some(fname) = binname_os.to_str().and_then(|x| Some(x.to_string())) {
+            if let Some(fname) = binname_os.to_str().map(|x| x.to_string()) {
                 // Get outdir
                 let outdir = cwd.join("build/");
 
@@ -163,15 +163,15 @@ impl Project {
                     Project::ZigFast => zig::zigfast(path, binname, outfile, verbose),
                     Project::ZigSmall => zig::zigsmall(path, binname, outfile, verbose),
                     Project::ZigSafe => zig::zigsafe(path, binname, outfile, verbose),
-                    Project::ZigCC => zig::zigcc(path, outfile, verbose),
+                    Project::ZiGcc => zig::zigcc(path, outfile, verbose),
                     Project::ZigCXX => zig::zigcxx(path, outfile, verbose),
                     Project::Cargo => cargo::build(path, binname, outfile, verbose),
                     Project::CargoZigbuild => cargo::zigbuild(path, binname, outfile, verbose),
                     Project::Go => go::build(path, outfile, verbose),
-                    Project::GCC => gcc::cc(path, outfile, verbose),
-                    Project::GXX => gcc::cxx(path, outfile, verbose),
+                    Project::Gcc => gcc::cc(path, outfile, verbose),
+                    Project::Gxx => gcc::cxx(path, outfile, verbose),
                     Project::Clang => clang::cc(path, outfile, verbose),
-                    Project::ClangXX => clang::cxx(path, outfile, verbose)
+                    Project::ClanGxx => clang::cxx(path, outfile, verbose)
                 }
             }
         }

@@ -16,7 +16,7 @@ fn main() -> ExitCode {
         match args.get(1).unwrap().as_str() {
             "build" => {
                 // Special Build Handle
-                if let Some("-v" | "--verbose") = args.get(2).and_then(|x| Some(x.as_str())) {
+                if let Some("-v" | "--verbose") = args.get(2).map(|x| x.as_str()) {
                     return build_handle(&mut prnt, true);
                 }
                 return build_handle(&mut prnt, false);
@@ -87,7 +87,7 @@ fn result_handle(prnt: &mut Printer, res: Result<(), Error>, success_message: &s
             return ExitCode::FAILURE;
         }
     };
-    return ExitCode::SUCCESS;
+    ExitCode::SUCCESS
 }
 
 /// Build Handle

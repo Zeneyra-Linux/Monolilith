@@ -14,7 +14,7 @@ pub fn remove(args: Vec<String>) -> Result<(), io::Error> {
     let mut database = config()?;
     let project = args.get(2).unwrap().to_string();
 
-    if let None = database.remove(&project) {
+    if database.remove(&project).is_none() {
         return Err(io::Error::new(
             io::ErrorKind::NotFound,
             format!("Project {} not found!", project)

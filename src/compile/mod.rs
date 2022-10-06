@@ -4,6 +4,8 @@ use std::io;
 use std::process::Command;
 use kagero::runner::{shell, silent};
 
+use std::ffi::OsStr;
+
 /// Cargo
 /// 
 /// Module for Cargo-specific commands
@@ -34,6 +36,9 @@ pub mod go;
 /// 
 /// Executes a Command, optionally in a verbose manner
 pub fn execute(cmd: Command, verbose: bool) -> io::Result<()> {
+	let debugargs: Vec<&OsStr> = cmd.get_args().collect();
+	println!("{:#?}", debugargs);
+
     // Bind stdout and stderr to shell if verbose flag is set
     if verbose {
         return shell(cmd);
@@ -112,10 +117,8 @@ fn list_meta(dir: impl AsRef<Path>) -> io::Result<impl Iterator<Item = (fs::DirE
 /// 
 /// # Example
 /// ```
-/// fn main() {
-///     for ele in compile::list_files("./src", "rs").unwrap() {
-///         println!("{}", ele);
-///     }
+/// for ele in compile::list_files("./src", "rs").unwrap() {
+///     println!("{}", ele);
 /// }
 /// ```
 /// 

@@ -24,7 +24,7 @@ pub fn add(args: Vec<String>) -> Result<(), io::Error> {
         return Err(io::Error::new(io::ErrorKind::NotFound, "Invalid Project Path!"));
     }
 
-    if let Some(_) = config.insert(path, project.unwrap().to_string()) {
+    if config.insert(path, project.unwrap().to_string()).is_some() {
         return Err(io::Error::new(io::ErrorKind::AlreadyExists, "Project already exists!"));
     }
 

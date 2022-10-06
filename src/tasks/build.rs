@@ -22,7 +22,7 @@ pub fn build(verbose: bool) -> Result<u128, Error> {
 
     // State that there are no projects if the table is empty
     let table: Vec<(String, Project)> = projects.collect();
-    if table.len() < 1 {
+    if table.is_empty() {
         printer.println("monolilith.json is empty!", Colors::BlueBright);
         return Ok(0);
     }

@@ -23,9 +23,8 @@ fn main() {
             Ok(branch) => println!("cargo:rustc-env=GIT_BRANCH_TAG={}", branch),
             Err(_) => {
                 // Try to get tag if you're not on a branch
-                match git(&["describe", "--tags", "--exact-match"]) {
-                    Ok(tag) => println!("cargo:rustc-env=GIT_BRANCH_TAG={}", tag),
-                    Err(_) => {}
+                if let Ok(tag) = git(&["describe", "--tags", "--exact-match"]) {
+                    println!("cargo:rustc-env=GIT_BRANCH_TAG={}", tag)
                 }
             }
         }
@@ -47,5 +46,5 @@ fn git(args: &[&str]) -> io::Result<String> {
 fn version(name: &str) -> String {
     let output = Command::new(name).arg("--version").output().unwrap();
     let raw = String::from_utf8(output.stdout).unwrap();
-    raw.replace(&format!("{} ", name).to_string(), "")
+    raw.replace(&format!("{} ", name), "")
 }
