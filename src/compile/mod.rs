@@ -4,8 +4,6 @@ use std::io;
 use std::process::Command;
 use kagero::runner::{shell, silent};
 
-use std::ffi::OsStr;
-
 /// Cargo
 /// 
 /// Module for Cargo-specific commands
@@ -36,9 +34,6 @@ pub mod go;
 /// 
 /// Executes a Command, optionally in a verbose manner
 pub fn execute(cmd: Command, verbose: bool) -> io::Result<()> {
-	let debugargs: Vec<&OsStr> = cmd.get_args().collect();
-	println!("{:#?}", debugargs);
-
     // Bind stdout and stderr to shell if verbose flag is set
     if verbose {
         return shell(cmd);

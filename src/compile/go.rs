@@ -14,10 +14,10 @@ pub fn build(path: impl AsRef<Path>, outfile: PathBuf, verbose: bool) -> io::Res
     // Create Go Build command
     let mut cmd = Command::new("go");
     cmd.arg("build")
-    // Set root source files and working directory
-    .args(files).current_dir(path)
     // Set output and ldflags
-    .arg("-o").arg(outfile).arg("-ldflags=\"-s -w\"");
+    .arg("-ldflags=\"-s -w\"").arg("-o").arg(outfile)
+    // Set root source files and working directory
+    .args(files).current_dir(path);
 
     execute(cmd, verbose)
 }
