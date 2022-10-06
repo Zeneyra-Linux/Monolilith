@@ -15,7 +15,7 @@ pub fn build(path: impl AsRef<Path>, outfile: PathBuf, verbose: bool) -> io::Res
     let mut cmd = Command::new("go");
     cmd.arg("build")
     // Set output and ldflags
-    .arg("-ldflags=\"-s -w\"").arg("-o").arg(outfile)
+    .arg("-ldflags=-s -w").arg("-o").arg(outfile)
     // Set root source files and working directory
     .args(files).current_dir(path);
 
