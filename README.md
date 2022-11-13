@@ -1,4 +1,13 @@
 # Monolilith
+![Build (Windows)](https://github.com/Zeneyra-Linux/Monolilith/actions/workflows/build-windows.yml/badge.svg?branch=main)
+![Build (Linux)](https://github.com/Zeneyra-Linux/Monolilith/actions/workflows/build-linux.yml/badge.svg?branch=main)
+![Clippy](https://github.com/Zeneyra-Linux/Monolilith/actions/workflows/cargo-clippy.yml/badge.svg?branch=main)
+![docs.rs](https://docs.rs/monolilith/badge.svg)
+![Version](https://img.shields.io/crates/v/monolilith.svg)
+![License](https://img.shields.io/crates/l/monolilith.svg)
+![Stars](https://img.shields.io/github/stars/Zeneyra-Linux/Monolilith.svg)
+![Downloads](https://img.shields.io/crates/d/monolilith.svg)
+
 Simple Build System for Monorepos
 
 # Installing
