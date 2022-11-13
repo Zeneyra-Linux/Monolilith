@@ -44,6 +44,9 @@ const ZIGCC: &str = "ziGcc";
 const ZIGCXX: &str = "zigc++";
 const CARGO: &str = "cargo";
 const CARGO_ZIGBUILD: &str = "cargo-zigbuild";
+const CARGO_AUTOBIN: &str = "cargo-autobin";
+const CARGO_WORKSPACE: &str = "cargo-workspace";
+const CARGO_TAURI: &str = "cargo-tauri";
 const GO: &str = "go";
 const GCC: &str = "Gcc";
 const GXX: &str = "g++";
@@ -60,11 +63,14 @@ pub enum Project {
     ZigCXX,
     Cargo,
     CargoZigbuild,
+    CargoAutobin,
+    CargoWorkspace,
+    CargoTauri,
     Go,
     Gcc,
     Gxx,
     Clang,
-    ClanGxx
+    Clangxx
 }
 
 impl AsRef<str> for Project {
@@ -77,11 +83,14 @@ impl AsRef<str> for Project {
             Project::ZigCXX => ZIGCXX,
             Project::Cargo => CARGO,
             Project::CargoZigbuild => CARGO_ZIGBUILD,
+            Project::CargoAutobin => CARGO_AUTOBIN,
+            Project::CargoWorkspace => CARGO_WORKSPACE,
+            Project::CargoTauri => CARGO_TAURI,
             Project::Go => GO,
             Project::Gcc => GCC,
             Project::Gxx => GXX,
             Project::Clang => CLANG,
-            Project::ClanGxx => CLANGXX
+            Project::Clangxx => CLANGXX
         }
     }
 }
@@ -96,11 +105,14 @@ impl ToString for Project {
             Project::ZigCXX => ZIGCXX.to_string(),
             Project::Cargo => CARGO.to_string(),
             Project::CargoZigbuild => CARGO_ZIGBUILD.to_string(),
+            Project::CargoAutobin => CARGO_AUTOBIN.to_string(),
+            Project::CargoWorkspace => CARGO_WORKSPACE.to_string(),
+            Project::CargoTauri => CARGO_TAURI.to_string(),
             Project::Go => GO.to_string(),
             Project::Gcc => GCC.to_string(),
             Project::Gxx => GXX.to_string(),
             Project::Clang => CLANG.to_string(),
-            Project::ClanGxx => CLANGXX.to_string()
+            Project::Clangxx => CLANGXX.to_string()
         }
     }
 }
@@ -112,14 +124,17 @@ impl Project {
             Project::ZigCXX => "C++ (Zig)",
             Project::Cargo => "Rust",
             Project::CargoZigbuild => "Rust (Zig)",
+            Project::CargoAutobin => "Rust (Autobin)",
+            Project::CargoWorkspace => "Rust (Workspace)",
+            Project::CargoTauri => "Rust (Tauri)",
             Project::Go => "Go",
             Project::Gcc => "C (Gcc)",
             Project::Gxx => "C++ (Gcc)",
             Project::Clang => "C (Clang)",
-            Project::ClanGxx => "C++ (Clang)",
+            Project::Clangxx => "C++ (Clang)",
             Project::ZigSafe => "Zig (Safe)",
             Project::ZigFast => "Zig (Fast)",
-            Project::ZigSmall => "Zig (Small)"            
+            Project::ZigSmall => "Zig (Small)"          
         }
     }
 
@@ -129,11 +144,14 @@ impl Project {
             ZIGCXX => Some(Project::ZigCXX),
             CARGO => Some(Project::Cargo),
             CARGO_ZIGBUILD => Some(Project::CargoZigbuild),
+            CARGO_AUTOBIN => Some(Project::CargoAutobin),
+            CARGO_WORKSPACE => Some(Project::CargoWorkspace),
+            CARGO_TAURI => Some(Project::CargoTauri),
             GO => Some(Project::Go),
             GCC => Some(Project::Gcc),
             GXX => Some(Project::Gxx),
             CLANG => Some(Project::Clang),
-            CLANGXX => Some(Project::ClanGxx),
+            CLANGXX => Some(Project::Clangxx),
             ZIGSAFE => Some(Project::ZigSafe),
             ZIGSMALL => Some(Project::ZigSmall),
             ZIGFAST => Some(Project::ZigFast),
@@ -171,7 +189,10 @@ impl Project {
                     Project::Gcc => gcc::cc(path, outfile, verbose),
                     Project::Gxx => gcc::cxx(path, outfile, verbose),
                     Project::Clang => clang::cc(path, outfile, verbose),
-                    Project::ClanGxx => clang::cxx(path, outfile, verbose)
+                    Project::Clangxx => clang::cxx(path, outfile, verbose),
+                    Project::CargoAutobin => todo!(),
+                    Project::CargoWorkspace => todo!(),
+                    Project::CargoTauri => todo!(),
                 }
             }
         }

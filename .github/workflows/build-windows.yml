@@ -1,0 +1,30 @@
+name: Build (Windows)
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  schedule:
+    - cron: '20 20 * * 3'
+
+jobs:
+  build-windows:
+    name: x86_64-pc-windows-msvc
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Install Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          components: clippy
+          override: true
+
+      - name: Compile Monolilith on Windows
+        run: cargo build --release --target=x86_64-pc-windows-msvc
